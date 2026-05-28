@@ -1,681 +1,822 @@
-// rutina_screen.dart
+
 
 import 'package:flutter/material.dart';
 
-class RutinaScreen extends StatelessWidget {
+class RutinaScreen extends StatefulWidget {
 
-  const RutinaScreen({super.key});
+const RutinaScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-
-    final List<Map<String, dynamic>> routines = [
-
-      {
-        "title": "Bajar Peso",
-        "description":
-        "Rutinas enfocadas en quemar grasa y cardio.",
-        "icon": Icons.local_fire_department,
-        "color": Colors.orange,
-      },
-
-      {
-        "title": "Ganar Masa",
-        "description":
-        "Entrenamientos para hipertrofia muscular.",
-        "icon": Icons.fitness_center,
-        "color": Colors.cyan,
-      },
-
-      {
-        "title": "Definición",
-        "description":
-        "Rutinas para marcar músculos y reducir grasa.",
-        "icon": Icons.bolt,
-        "color": Colors.green,
-      },
-
-      {
-        "title": "Fuerza",
-        "description":
-        "Ejercicios pesados y progresivos.",
-        "icon": Icons.sports_mma,
-        "color": Colors.redAccent,
-      },
-
-      {
-        "title": "Casa",
-        "description":
-        "Rutinas sin máquinas ni gimnasio.",
-        "icon": Icons.home,
-        "color": Colors.purpleAccent,
-      },
-
-      {
-        "title": "Gym Completo",
-        "description":
-        "Entrenamientos completos de gimnasio.",
-        "icon": Icons.apartment,
-        "color": Colors.blueAccent,
-      },
-    ];
-
-    return Scaffold(
-
-      backgroundColor:
-      const Color(0xFF071120),
-
-      appBar: AppBar(
-
-        backgroundColor: Colors.transparent,
-
-        elevation: 0,
-
-        centerTitle: true,
-
-        title: const Text(
-
-          "Rutinas",
-
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      body: Padding(
-
-        padding: const EdgeInsets.all(18),
-
-        child: Column(
-
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
-
-          children: [
-
-            Container(
-
-              width: double.infinity,
-
-              padding: const EdgeInsets.all(24),
-
-              decoration: BoxDecoration(
-
-                borderRadius:
-                BorderRadius.circular(25),
-
-                gradient: const LinearGradient(
-
-                  colors: [
-                    Color(0xFF00C6FF),
-                    Color(0xFF0072FF),
-                  ],
-                ),
-              ),
-
-              child: const Column(
-
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
-
-                children: [
-
-                  Icon(
-
-                    Icons.auto_awesome,
-
-                    color: Colors.white,
-
-                    size: 45,
-                  ),
-
-                  SizedBox(height: 15),
-
-                  Text(
-
-                    "Selecciona Tu Objetivo",
-
-                    style: TextStyle(
-
-                      color: Colors.white,
-
-                      fontSize: 28,
-
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-
-                  Text(
-
-                    "Elige el tipo de rutina que mejor se adapte a tu objetivo físico.",
-
-                    style: TextStyle(
-
-                      color: Colors.white70,
-
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            const Text(
-
-              "Rutinas Disponibles",
-
-              style: TextStyle(
-
-                color: Colors.white,
-
-                fontSize: 22,
-
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 18),
-
-            Expanded(
-
-              child: GridView.builder(
-
-                itemCount: routines.length,
-
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-
-                  crossAxisCount: 2,
-
-                  crossAxisSpacing: 16,
-
-                  mainAxisSpacing: 16,
-
-                  childAspectRatio: 0.9,
-                ),
-
-                itemBuilder: (context, index) {
-
-                  final routine =
-                  routines[index];
-
-                  return GestureDetector(
-
-                    onTap: () {
-
-                      Navigator.push(
-
-                        context,
-
-                        MaterialPageRoute(
-
-                          builder: (_) =>
-                              RoutineDetailScreen(
-
-                                title:
-                                routine["title"],
-
-                                description:
-                                routine["description"],
-
-                                color:
-                                routine["color"],
-                              ),
-                        ),
-                      );
-                    },
-
-                    child: Container(
-
-                      decoration: BoxDecoration(
-
-                        color:
-                        const Color(0xFF111C30),
-
-                        borderRadius:
-                        BorderRadius.circular(25),
-
-                        border: Border.all(
-                          color: Colors.white10,
-                        ),
-                      ),
-
-                      child: Padding(
-
-                        padding:
-                        const EdgeInsets.all(18),
-
-                        child: Column(
-
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-
-                          children: [
-
-                            Container(
-
-                              width: 70,
-
-                              height: 70,
-
-                              decoration: BoxDecoration(
-
-                                color:
-                                routine["color"]
-                                    .withOpacity(0.15),
-
-                                borderRadius:
-                                BorderRadius.circular(
-                                  22,
-                                ),
-                              ),
-
-                              child: Icon(
-
-                                routine["icon"],
-
-                                size: 38,
-
-                                color:
-                                routine["color"],
-                              ),
-                            ),
-
-                            const SizedBox(height: 18),
-
-                            Text(
-
-                              routine["title"],
-
-                              textAlign:
-                              TextAlign.center,
-
-                              style:
-                              const TextStyle(
-
-                                color:
-                                Colors.white,
-
-                                fontSize: 18,
-
-                                fontWeight:
-                                FontWeight.bold,
-                              ),
-                            ),
-
-                            const SizedBox(height: 8),
-
-                            Text(
-
-                              routine["description"],
-
-                              textAlign:
-                              TextAlign.center,
-
-                              style:
-                              const TextStyle(
-
-                                color:
-                                Colors.white70,
-
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+@override
+State<RutinaScreen> createState() =>
+_RutinaScreenState();
 }
 
-class RoutineDetailScreen
-    extends StatelessWidget {
+class _RutinaScreenState
+extends State<RutinaScreen> {
 
-  final String title;
+int seleccionado = 3;
 
-  final String description;
+String tipoRutina = "GYM";
 
-  final Color color;
+late List<DateTime> semanaActual;
 
-  const RoutineDetailScreen({
+final List<String> dias = [
 
-    super.key,
+"LUN",
+"MAR",
+"MIÉ",
+"JUE",
+"VIE",
+"SÁB",
+"DOM",
+];
 
-    required this.title,
+@override
+void initState() {
 
-    required this.description,
+super.initState();
 
-    required this.color,
-  });
+generarSemanaActual();
+}
 
-  @override
-  Widget build(BuildContext context) {
+void generarSemanaActual() {
 
-    final List<Map<String, dynamic>> days = [
+final hoy = DateTime.now();
 
-      {
-        "day": "Lunes",
-        "muscle": "Pecho + Triceps",
-        "icon": Icons.fitness_center,
-      },
+semanaActual = List.generate(
 
-      {
-        "day": "Martes",
-        "muscle": "Espalda + Bíceps",
-        "icon": Icons.sports_gymnastics,
-      },
+7,
 
-      {
-        "day": "Miércoles",
-        "muscle": "Piernas",
-        "icon": Icons.directions_run,
-      },
+(index) =>
 
-      {
-        "day": "Jueves",
-        "muscle": "Hombros",
-        "icon": Icons.accessibility_new,
-      },
+hoy.add(
+Duration(
+days: index - 3,
+),
+),
+);
 
-      {
-        "day": "Viernes",
-        "muscle": "Cardio + Abdomen",
-        "icon": Icons.favorite,
-      },
+seleccionado = 3;
+}
 
-      {
-        "day": "Sábado",
-        "muscle": "Full Body",
-        "icon": Icons.bolt,
-      },
-    ];
+@override
+Widget build(BuildContext context) {
 
-    return Scaffold(
+final fechaSeleccionada =
+semanaActual[seleccionado];
 
-      backgroundColor:
-      const Color(0xFF071120),
+return Scaffold(
 
-      appBar: AppBar(
+backgroundColor:
+const Color(0xFF020B1C),
 
-        backgroundColor: Colors.transparent,
+appBar: AppBar(
 
-        elevation: 0,
+backgroundColor:
+Colors.transparent,
 
-        title: Text(
+elevation: 0,
 
-          title,
+centerTitle: true,
 
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
+title: const Text(
 
-      body: Padding(
+"Rutinas",
 
-        padding: const EdgeInsets.all(20),
+style: TextStyle(
 
-        child: Column(
+color: Colors.white,
 
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+fontSize: 24,
 
-          children: [
+fontWeight:
+FontWeight.bold,
+),
+),
+),
 
-            Container(
+body: SafeArea(
 
-              width: double.infinity,
+child: SingleChildScrollView(
 
-              padding: const EdgeInsets.all(24),
+padding:
+const EdgeInsets.symmetric(
 
-              decoration: BoxDecoration(
+horizontal: 22,
+vertical: 10,
+),
 
-                color:
-                const Color(0xFF111C30),
+child: Column(
 
-                borderRadius:
-                BorderRadius.circular(25),
-              ),
+crossAxisAlignment:
+CrossAxisAlignment.start,
 
-              child: Column(
+children: [
 
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+SizedBox(
 
-                children: [
+height: 92,
 
-                  Icon(
+child: ListView.builder(
 
-                    Icons.fitness_center,
+scrollDirection:
+Axis.horizontal,
 
-                    size: 50,
+itemCount:
+semanaActual.length,
 
-                    color: color,
-                  ),
+itemBuilder:
+(context, index) {
 
-                  const SizedBox(height: 15),
+final fecha =
+semanaActual[index];
 
-                  Text(
+final activo =
+seleccionado ==
+index;
 
-                    title,
+return GestureDetector(
 
-                    style: const TextStyle(
+onTap: () {
 
-                      color: Colors.white,
+setState(() {
 
-                      fontSize: 30,
+seleccionado =
+index;
+});
+},
 
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+child: AnimatedContainer(
 
-                  const SizedBox(height: 10),
+duration:
+const Duration(
+milliseconds: 250,
+),
 
-                  Text(
+width: 72,
 
-                    description,
+margin:
+const EdgeInsets.only(
+right: 14,
+),
 
-                    style: const TextStyle(
+decoration: BoxDecoration(
 
-                      color: Colors.white70,
+borderRadius:
+BorderRadius.circular(
+26,
+),
 
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+gradient:
 
-            const SizedBox(height: 30),
+activo
 
-            const Text(
+? LinearGradient(
 
-              "Plan Semanal",
+colors: [
 
-              style: TextStyle(
+Colors.cyan
+    .withOpacity(
+0.20,
+),
 
-                color: Colors.white,
+Colors.blue
+    .withOpacity(
+0.05,
+),
+],
+)
 
-                fontSize: 24,
+    : null,
 
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+color:
 
-            const SizedBox(height: 18),
+activo
 
-            Expanded(
+? null
 
-              child: ListView.builder(
+    : const Color(
+0xFF111C30,
+),
 
-                itemCount: days.length,
+border: Border.all(
 
-                itemBuilder: (context, index) {
+color:
 
-                  final item = days[index];
+activo
 
-                  return GestureDetector(
+? Colors.cyan
 
-                    onTap: () {
+    : Colors.white10,
 
-                      ScaffoldMessenger.of(
-                          context)
+width:
+activo
+? 2
+    : 1,
+),
+),
 
-                          .showSnackBar(
+child: Column(
 
-                        SnackBar(
+mainAxisAlignment:
+MainAxisAlignment.center,
 
-                          content: Text(
-                            "${item["muscle"]} próximamente",
-                          ),
-                        ),
-                      );
-                    },
+children: [
 
-                    child: Container(
+Text(
 
-                      margin:
-                      const EdgeInsets.only(
-                        bottom: 16,
-                      ),
+dias[index],
 
-                      padding:
-                      const EdgeInsets.all(18),
+style: TextStyle(
 
-                      decoration: BoxDecoration(
+color:
 
-                        color:
-                        const Color(
-                          0xFF111C30,
-                        ),
+activo
 
-                        borderRadius:
-                        BorderRadius.circular(
-                          22,
-                        ),
+? Colors.cyan
 
-                        border: Border.all(
-                          color: Colors.white10,
-                        ),
-                      ),
+    : Colors.white54,
 
-                      child: Row(
+fontSize: 13,
 
-                        children: [
+fontWeight:
+FontWeight.bold,
+),
+),
 
-                          Container(
+const SizedBox(
+height: 8,
+),
 
-                            width: 65,
+Text(
 
-                            height: 65,
+fecha.day
+    .toString(),
 
-                            decoration: BoxDecoration(
+style:
+const TextStyle(
 
-                              color:
-                              color.withOpacity(
-                                0.15,
-                              ),
+color:
+Colors.white,
 
-                              borderRadius:
-                              BorderRadius.circular(
-                                18,
-                              ),
-                            ),
+fontSize: 28,
 
-                            child: Icon(
+fontWeight:
+FontWeight.bold,
+),
+),
+],
+),
+),
+);
+},
+),
+),
 
-                              item["icon"],
+const SizedBox(height: 38),
 
-                              color: color,
+const Text(
 
-                              size: 34,
-                            ),
-                          ),
+"Tu rutina",
 
-                          const SizedBox(width: 18),
+style: TextStyle(
 
-                          Expanded(
+color:
+Colors.white,
 
-                            child: Column(
+fontSize: 30,
 
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+fontWeight:
+FontWeight.bold,
+),
+),
 
-                              children: [
+const SizedBox(height: 20),
 
-                                Text(
+Row(
 
-                                  item["day"],
+children: [
 
-                                  style:
-                                  const TextStyle(
+Expanded(
 
-                                    color:
-                                    Colors.white,
+child: GestureDetector(
 
-                                    fontSize:
-                                    20,
+onTap: () {
 
-                                    fontWeight:
-                                    FontWeight.bold,
-                                  ),
-                                ),
+setState(() {
 
-                                const SizedBox(
-                                  height: 6,
-                                ),
+tipoRutina =
+"GYM";
+});
+},
 
-                                Text(
+child: AnimatedContainer(
 
-                                  item["muscle"],
+duration:
+const Duration(
+milliseconds: 250,
+),
 
-                                  style:
-                                  const TextStyle(
+height: 70,
 
-                                    color:
-                                    Colors.white70,
+decoration: BoxDecoration(
 
-                                    fontSize:
-                                    15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+borderRadius:
+BorderRadius.circular(
+24,
+),
 
-                          const Icon(
+border: Border.all(
 
-                            Icons.arrow_forward_ios,
+color:
 
-                            color: Colors.white38,
+tipoRutina ==
+"GYM"
 
-                            size: 18,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+? Colors.cyan
+
+    : Colors.white10,
+),
+
+gradient:
+
+tipoRutina ==
+"GYM"
+
+? LinearGradient(
+
+colors: [
+
+Colors.cyan
+    .withOpacity(
+0.25,
+),
+
+Colors.blue
+    .withOpacity(
+0.08,
+),
+],
+)
+
+    : null,
+
+color:
+
+tipoRutina ==
+"GYM"
+
+? null
+
+    : const Color(
+0xFF111C30,
+),
+),
+
+child: const Row(
+
+mainAxisAlignment:
+MainAxisAlignment.center,
+
+children: [
+
+Icon(
+
+Icons
+    .fitness_center,
+
+color:
+Colors.cyan,
+
+size: 28,
+),
+
+SizedBox(width: 12),
+
+Text(
+
+"GYM",
+
+style: TextStyle(
+
+color:
+Colors.white,
+
+fontSize: 22,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+],
+),
+),
+),
+),
+
+const SizedBox(width: 18),
+
+Expanded(
+
+child: GestureDetector(
+
+onTap: () {
+
+setState(() {
+
+tipoRutina =
+"CASA";
+});
+},
+
+child: AnimatedContainer(
+
+duration:
+const Duration(
+milliseconds: 250,
+),
+
+height: 70,
+
+decoration: BoxDecoration(
+
+borderRadius:
+BorderRadius.circular(
+24,
+),
+
+border: Border.all(
+
+color:
+
+tipoRutina ==
+"CASA"
+
+? Colors.purpleAccent
+
+    : Colors.white10,
+),
+
+gradient:
+
+tipoRutina ==
+"CASA"
+
+? LinearGradient(
+
+colors: [
+
+Colors.purpleAccent
+    .withOpacity(
+0.25,
+),
+
+Colors.pink
+    .withOpacity(
+0.08,
+),
+],
+)
+
+    : null,
+
+color:
+
+tipoRutina ==
+"CASA"
+
+? null
+
+    : const Color(
+0xFF111C30,
+),
+),
+
+child: const Row(
+
+mainAxisAlignment:
+MainAxisAlignment.center,
+
+children: [
+
+Icon(
+
+Icons.home,
+
+color:
+Colors.purpleAccent,
+
+size: 28,
+),
+
+SizedBox(width: 12),
+
+Text(
+
+"CASA",
+
+style: TextStyle(
+
+color:
+Colors.white,
+
+fontSize: 22,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+],
+),
+),
+),
+),
+],
+),
+
+const SizedBox(height: 35),
+
+Container(
+
+width: double.infinity,
+
+padding:
+const EdgeInsets.all(30),
+
+decoration: BoxDecoration(
+
+borderRadius:
+BorderRadius.circular(
+34,
+),
+
+color:
+const Color(
+0xFF111C30,
+),
+
+border: Border.all(
+color: Colors.white10,
+),
+),
+
+child: Column(
+
+children: [
+
+Container(
+
+width: 100,
+
+height: 100,
+
+decoration: BoxDecoration(
+
+shape:
+BoxShape.circle,
+
+gradient:
+
+tipoRutina ==
+"GYM"
+
+? LinearGradient(
+
+colors: [
+
+Colors.cyan
+    .withOpacity(
+0.30,
+),
+
+Colors.blue
+    .withOpacity(
+0.10,
+),
+],
+)
+
+    : LinearGradient(
+
+colors: [
+
+Colors.purpleAccent
+    .withOpacity(
+0.30,
+),
+
+Colors.pink
+    .withOpacity(
+0.10,
+),
+],
+),
+),
+
+child: Icon(
+
+tipoRutina ==
+"GYM"
+
+? Icons
+    .fitness_center
+
+    : Icons.home,
+
+color:
+
+tipoRutina ==
+"GYM"
+
+? Colors.cyan
+
+    : Colors.purpleAccent,
+
+size: 46,
+),
+),
+
+const SizedBox(height: 30),
+
+Text(
+
+"${dias[seleccionado]} ${fechaSeleccionada.day}",
+
+style: const TextStyle(
+
+color:
+Colors.white,
+
+fontSize: 40,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+
+const SizedBox(height: 10),
+
+Text(
+
+tipoRutina == "GYM"
+
+? "Rutina de gimnasio"
+
+    : "Rutina en casa",
+
+style: const TextStyle(
+
+color:
+Colors.white54,
+
+fontSize: 18,
+),
+),
+
+const SizedBox(height: 45),
+
+Icon(
+
+Icons.fact_check_outlined,
+
+color:
+Colors.white24,
+
+size: 110,
+),
+
+const SizedBox(height: 28),
+
+const Text(
+
+"Aún no tienes ejercicios",
+
+textAlign:
+TextAlign.center,
+
+style: TextStyle(
+
+color:
+Colors.white,
+
+fontSize: 28,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+
+const SizedBox(height: 15),
+
+const Text(
+
+"Los ejercicios generados aparecerán aquí.",
+
+textAlign:
+TextAlign.center,
+
+style: TextStyle(
+
+color:
+Colors.white54,
+
+fontSize: 16,
+
+height: 1.5,
+),
+),
+
+const SizedBox(height: 40),
+
+Container(
+
+width: double.infinity,
+
+height: 68,
+
+decoration: BoxDecoration(
+
+borderRadius:
+BorderRadius.circular(
+22,
+),
+
+border: Border.all(
+
+color:
+
+tipoRutina ==
+"GYM"
+
+? Colors.cyan
+
+    : Colors.purpleAccent,
+),
+),
+
+child: Center(
+
+child: Row(
+
+mainAxisAlignment:
+MainAxisAlignment.center,
+
+children: [
+
+Icon(
+
+Icons.add,
+
+color:
+
+tipoRutina ==
+"GYM"
+
+? Colors.cyan
+
+    : Colors.purpleAccent,
+
+size: 34,
+),
+
+const SizedBox(
+width: 12,
+),
+
+Text(
+
+"Agregar ejercicios",
+
+style: TextStyle(
+
+color:
+
+tipoRutina ==
+"GYM"
+
+? Colors.cyan
+
+    : Colors.purpleAccent,
+
+fontSize: 22,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+],
+),
+),
+),
+],
+),
+),
+
+const SizedBox(height: 40),
+],
+),
+),
+),
+);
+}
 }

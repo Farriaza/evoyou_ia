@@ -1,3 +1,6 @@
+
+// running_history_screen.dart
+
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,559 +8,350 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RunningHistoryScreen
-    extends StatelessWidget {
+extends StatelessWidget {
 
-  const RunningHistoryScreen({
-    super.key,
-  });
+const RunningHistoryScreen({
+super.key,
+});
 
-  @override
-  Widget build(BuildContext context) {
+@override
+Widget build(BuildContext context) {
 
-    final user =
-        FirebaseAuth.instance.currentUser;
+final user =
+FirebaseAuth.instance.currentUser;
 
-    return Scaffold(
+return Scaffold(
 
-      backgroundColor:
-      const Color(0xFF071120),
+backgroundColor:
+const Color(0xFF071120),
 
-      appBar: AppBar(
+appBar: AppBar(
 
-        backgroundColor:
-        Colors.transparent,
+backgroundColor:
+Colors.transparent,
 
-        elevation: 0,
+elevation: 0,
 
-        title:
-        const Text(
-          "Historial Running",
-        ),
-      ),
+title:
+const Text(
+"Historial Running",
+),
+),
 
-      body: StreamBuilder<
+body: StreamBuilder<
 
-          QuerySnapshot<
+QuerySnapshot<
+Map<String, dynamic>>>(
 
-              Map<String, dynamic>>>(
+stream:
 
-        stream:
+FirebaseFirestore.instance
 
-        FirebaseFirestore.instance
+    .collection(
+"running_sessions")
 
-            .collection(
-            "running_sessions")
+    .where(
+"uid",
+isEqualTo:
+user?.uid,
+)
 
-            .where(
-          "uid",
-          isEqualTo:
-          user?.uid,
-        )
+    .orderBy(
+"creado",
+descending: true,
+)
 
-            .orderBy(
-          "creado",
-          descending: true,
-        )
+    .snapshots(),
 
-            .snapshots(),
+builder: (context, snapshot) {
 
-        builder: (context, snapshot) {
+if(snapshot.hasError){
 
-          if(snapshot.hasError){
+return const Center(
 
-            return const Center(
+child: Text(
 
-              child: Text(
+"Error cargando historial",
 
-                "Error cargando historial",
+style: TextStyle(
+color: Colors.red,
+),
+),
+);
+}
 
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            );
-          }
+if(snapshot.connectionState ==
+ConnectionState.waiting){
 
-          if(snapshot.connectionState ==
-              ConnectionState.waiting){
+return const Center(
 
-            return const Center(
+child:
+CircularProgressIndicator(
+color: Colors.cyan,
+),
+);
+}
 
-              child:
-              CircularProgressIndicator(
-                color: Colors.cyan,
-              ),
-            );
-          }
+if(!snapshot.hasData ||
+snapshot.data!.docs.isEmpty){
 
-          if(!snapshot.hasData ||
-              snapshot.data!.docs.isEmpty){
+return const Center(
 
-            return const Center(
+child: Text(
 
-              child: Text(
+"No hay carreras registradas",
 
-                "No hay carreras registradas",
+style: TextStyle(
+color: Colors.white70,
+fontSize: 16,
+),
+),
+);
+}
 
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
-              ),
-            );
-          }
+final carreras =
+snapshot.data!.docs;
 
-          final carreras =
-              snapshot.data!.docs;
+return ListView.builder(
 
-          return ListView.builder(
+padding:
+const EdgeInsets.all(20),
 
-            padding:
-            const EdgeInsets.all(20),
+itemCount:
+carreras.length,
 
-            itemCount:
-            carreras.length,
+itemBuilder:
+(context, index){
 
-            itemBuilder:
-                (context, index){
+final data =
+carreras[index].data();
 
-              final data =
-              carreras[index].data();
+return Container(
 
-              final ruta =
-                  data["ruta"] ?? [];
+margin:
+const EdgeInsets.only(
+bottom: 20,
+),
 
-              return Container(
+padding:
+const EdgeInsets.all(22),
 
-                margin:
-                const EdgeInsets.only(
-                  bottom: 20,
-                ),
+decoration: BoxDecoration(
 
-                padding:
-                const EdgeInsets.all(22),
+color:
+const Color(
+0xFF111C30,
+),
 
-                decoration: BoxDecoration(
+borderRadius:
+BorderRadius.circular(
+28,
+),
 
-                  color:
-                  const Color(
-                    0xFF111C30,
-                  ),
+border: Border.all(
 
-                  borderRadius:
-                  BorderRadius.circular(
-                    28,
-                  ),
+color:
+Colors.cyan
+    .withOpacity(0.15),
+),
+),
 
-                  border: Border.all(
+child: Column(
 
-                    color:
-                    Colors.cyan
-                        .withOpacity(0.15),
-                  ),
-                ),
+crossAxisAlignment:
+CrossAxisAlignment.start,
 
-                child: Column(
+children: [
 
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+Row(
 
-                  children: [
+children: [
 
-                    Row(
+Container(
 
-                      children: [
+padding:
+const EdgeInsets.all(14),
 
-                        Container(
+decoration: BoxDecoration(
 
-                          padding:
-                          const EdgeInsets.all(14),
+shape:
+BoxShape.circle,
 
-                          decoration: BoxDecoration(
+color:
+Colors.cyan
+    .withOpacity(
+0.12,
+),
+),
 
-                            shape:
-                            BoxShape.circle,
+child: const Icon(
 
-                            color:
-                            Colors.cyan
-                                .withOpacity(
-                              0.12,
-                            ),
-                          ),
+Icons
+    .directions_run,
 
-                          child: const Icon(
+color:
+Colors.cyan,
 
-                            Icons
-                                .directions_run,
+size: 28,
+),
+),
 
-                            color:
-                            Colors.cyan,
+const SizedBox(
+width: 16,
+),
 
-                            size: 28,
-                          ),
-                        ),
+Expanded(
 
-                        const SizedBox(
-                          width: 16,
-                        ),
+child: Column(
 
-                        Expanded(
+crossAxisAlignment:
+CrossAxisAlignment
+    .start,
 
-                          child: Column(
+children: [
 
-                            crossAxisAlignment:
-                            CrossAxisAlignment
-                                .start,
+const Text(
 
-                            children: [
+"Sesión Running",
 
-                              const Text(
+style: TextStyle(
 
-                                "Sesión Running",
+color:
+Colors.white,
 
-                                style: TextStyle(
+fontSize: 20,
 
-                                  color:
-                                  Colors.white,
+fontWeight:
+FontWeight.bold,
+),
+),
 
-                                  fontSize: 20,
+const SizedBox(
+height: 5,
+),
 
-                                  fontWeight:
-                                  FontWeight.bold,
-                                ),
-                              ),
+Text(
 
-                              const SizedBox(
-                                height: 5,
-                              ),
+formatearFechaHora(
+data["creado"],
+),
 
-                              Text(
+style:
+const TextStyle(
 
-                                formatearFechaHora(
-                                  data["creado"],
-                                ),
+color:
+Colors.white54,
+),
+),
+],
+),
+),
+],
+),
 
-                                style:
-                                const TextStyle(
+const SizedBox(height: 25),
 
-                                  color:
-                                  Colors.white54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+info(
 
-                    const SizedBox(height: 25),
+"Tiempo",
 
-                    info(
+data["tiempoTexto"]
+?? "--:--",
+),
 
-                      "Tiempo",
+info(
 
-                      data["tiempoTexto"]
-                          ?? "--:--",
-                    ),
+"Distancia",
 
-                    info(
+"${(data["distanciaKm"] ?? 0).toStringAsFixed(2)} km",
+),
 
-                      "Distancia",
+info(
 
-                      "${(data["distanciaKm"] ?? 0).toStringAsFixed(2)} km",
-                    ),
+"Calorías",
 
-                    info(
+"${(data["calorias"] ?? 0).toStringAsFixed(0)} kcal",
+),
 
-                      "Calorías",
+info(
 
-                      "${(data["calorias"] ?? 0).toStringAsFixed(0)} kcal",
-                    ),
+"Ritmo",
 
-                    info(
+"${(data["ritmo"] ?? 0).toStringAsFixed(1)} km/h",
+),
+],
+),
+);
+},
+);
+},
+),
+);
+}
 
-                      "Puntos GPS",
+Widget info(
+String titulo,
+String valor,
+){
 
-                      "${ruta.length}",
-                    ),
+return Padding(
 
-                    const SizedBox(height: 25),
+padding:
+const EdgeInsets.only(
+bottom: 14,
+),
 
-                    Row(
+child: Row(
 
-                      children: [
+mainAxisAlignment:
+MainAxisAlignment
+    .spaceBetween,
 
-                        Expanded(
+children: [
 
-                          child:
-                          ElevatedButton.icon(
+Text(
 
-                            style:
-                            ElevatedButton
-                                .styleFrom(
+titulo,
 
-                              backgroundColor:
-                              Colors.cyan,
+style: const TextStyle(
 
-                              shape:
-                              RoundedRectangleBorder(
+color: Colors.white54,
 
-                                borderRadius:
-                                BorderRadius.circular(
-                                  18,
-                                ),
-                              ),
-                            ),
+fontSize: 15,
+),
+),
 
-                            onPressed: () {
+Text(
 
-                              mostrarRuta(
-                                context,
-                                ruta,
-                              );
-                            },
+valor,
 
-                            icon: const Icon(
+style: const TextStyle(
 
-                              Icons.map,
+color: Colors.white,
 
-                              color:
-                              Colors.white,
-                            ),
+fontWeight:
+FontWeight.bold,
 
-                            label: const Text(
+fontSize: 16,
+),
+),
+],
+),
+);
+}
 
-                              "Ver ruta",
+String formatearFechaHora(
+dynamic fecha){
 
-                              style: TextStyle(
-                                color:
-                                Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+if(fecha == null)
+return "";
 
-                        const SizedBox(width: 14),
+final date =
+fecha.toDate();
 
-                        Expanded(
-
-                          child:
-                          ElevatedButton.icon(
-
-                            style:
-                            ElevatedButton
-                                .styleFrom(
-
-                              backgroundColor:
-                              Colors.green,
-
-                              shape:
-                              RoundedRectangleBorder(
-
-                                borderRadius:
-                                BorderRadius.circular(
-                                  18,
-                                ),
-                              ),
-                            ),
-
-                            onPressed: () {
-
-                              ScaffoldMessenger.of(
-                                  context)
-
-                                  .showSnackBar(
-
-                                const SnackBar(
-
-                                  content: Text(
-                                    "Repetir ruta próximamente",
-                                  ),
-                                ),
-                              );
-                            },
-
-                            icon: const Icon(
-
-                              Icons.refresh,
-
-                              color:
-                              Colors.white,
-                            ),
-
-                            label: const Text(
-
-                              "Repetir",
-
-                              style: TextStyle(
-                                color:
-                                Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  Widget info(
-      String titulo,
-      String valor,
-      ){
-
-    return Padding(
-
-      padding:
-      const EdgeInsets.only(
-        bottom: 14,
-      ),
-
-      child: Row(
-
-        mainAxisAlignment:
-        MainAxisAlignment
-            .spaceBetween,
-
-        children: [
-
-          Text(
-
-            titulo,
-
-            style: const TextStyle(
-
-              color: Colors.white54,
-
-              fontSize: 15,
-            ),
-          ),
-
-          Text(
-
-            valor,
-
-            style: const TextStyle(
-
-              color: Colors.white,
-
-              fontWeight:
-              FontWeight.bold,
-
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String formatearFechaHora(
-      dynamic fecha){
-
-    if(fecha == null)
-      return "";
-
-    final date =
-    fecha.toDate();
-
-    return
-      "${date.day}/${date.month}/${date.year} "
-          "${date.hour.toString().padLeft(2, '0')}:"
-          "${date.minute.toString().padLeft(2, '0')}";
-  }
-
-  void mostrarRuta(
-      BuildContext context,
-      List ruta,
-      ){
-
-    showDialog(
-
-      context: context,
-
-      builder: (_) {
-
-        return AlertDialog(
-
-          backgroundColor:
-          const Color(0xFF111C30),
-
-          title: const Text(
-
-            "Ruta guardada",
-
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-
-          content: SizedBox(
-
-            width: double.maxFinite,
-
-            child: Column(
-
-              mainAxisSize:
-              MainAxisSize.min,
-
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-
-              children: [
-
-                Text(
-
-                  "Puntos registrados: ${ruta.length}",
-
-                  style: const TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
-
-                const SizedBox(height: 15),
-
-                const Text(
-
-                  "Más adelante aquí se mostrará la imagen y comparación de ruta.",
-
-                  style: TextStyle(
-                    color: Colors.white54,
-                    height: 1.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          actions: [
-
-            TextButton(
-
-              onPressed: () {
-
-                Navigator.pop(context);
-              },
-
-              child: const Text(
-
-                "Cerrar",
-
-                style: TextStyle(
-                  color: Colors.cyan,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+return
+"${date.day}/${date.month}/${date.year} "
+"${date.hour.toString().padLeft(2, '0')}:"
+"${date.minute.toString().padLeft(2, '0')}";
+}
 }

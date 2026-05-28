@@ -1,3 +1,6 @@
+
+// running_screen.dart
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,524 +8,643 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:geolocator/geolocator.dart';
+
 import 'running_history_screen.dart';
 
 class RunningScreen extends StatefulWidget {
 
-  const RunningScreen({super.key});
+const RunningScreen({super.key});
 
-  @override
-  State<RunningScreen> createState() =>
-      _RunningScreenState();
+@override
+State<RunningScreen> createState() =>
+_RunningScreenState();
 }
 
 class _RunningScreenState
-    extends State<RunningScreen> {
+extends State<RunningScreen> {
 
-  bool running = false;
+bool running = false;
 
-  int segundos = 0;
+int segundos = 0;
 
-  double distanciaKm = 0;
+double distanciaKm = 0;
 
-  double calorias = 0;
+double calorias = 0;
 
-  Timer? timer;
+Timer? timer;
 
-  List<Map<String, dynamic>> ruta = [];
+Position? ultimaPosicion;
 
-  void iniciarCarrera() {
+StreamSubscription<Position>?
+posicionStream;
 
-    setState(() {
+void iniciarCarrera() async {
 
-      running = true;
+bool servicioHabilitado =
+await Geolocator
+    .isLocationServiceEnabled();
 
-      segundos = 0;
+if (!servicioHabilitado) {
 
-      distanciaKm = 0;
+ScaffoldMessenger.of(context)
 
-      calorias = 0;
+    .showSnackBar(
 
-      ruta.clear();
-    });
+const SnackBar(
 
-    timer = Timer.periodic(
+content: Text(
+"Activa el GPS",
+),
+),
+);
 
-      const Duration(seconds: 1),
+return;
+}
 
-          (_) {
+LocationPermission permiso =
+await Geolocator.checkPermission();
 
-        setState(() {
+if (permiso ==
+LocationPermission.denied) {
 
-          segundos++;
+permiso =
+await Geolocator
+    .requestPermission();
+}
 
-          // SIMULACIÓN
+if (permiso ==
+LocationPermission.denied ||
 
-          distanciaKm += 0.003;
+permiso ==
+LocationPermission
+    .deniedForever) {
 
-          calorias += 0.25;
+ScaffoldMessenger.of(context)
 
-          ruta.add({
+    .showSnackBar(
 
-            "lat":
-            -33.45 + segundos * 0.0001,
+const SnackBar(
 
-            "lng":
-            -70.66 + segundos * 0.0001,
-          });
-        });
-      },
-    );
-  }
+content: Text(
+"Permiso GPS denegado",
+),
+),
+);
 
-  Future<void> detenerCarrera() async {
+return;
+}
 
-    timer?.cancel();
+setState(() {
 
-    setState(() {
+running = true;
 
-      running = false;
-    });
+segundos = 0;
 
-    await guardarSesion();
+distanciaKm = 0;
 
-    if (!mounted) return;
+calorias = 0;
+});
 
-    ScaffoldMessenger.of(context)
+timer = Timer.periodic(
 
-        .showSnackBar(
+const Duration(seconds: 1),
 
-      const SnackBar(
+(_) {
 
-        backgroundColor: Colors.green,
+setState(() {
 
-        content: Text(
-          "Sesión guardada",
-        ),
-      ),
-    );
-  }
+segundos++;
+});
+},
+);
 
-  Future<void> guardarSesion() async {
+posicionStream =
 
-    try {
+Geolocator.getPositionStream(
 
-      final user =
-          FirebaseAuth.instance.currentUser;
+locationSettings:
+const LocationSettings(
 
-      if (user == null) return;
+accuracy:
+LocationAccuracy.high,
 
-      await FirebaseFirestore.instance
+distanceFilter: 5,
+),
+).listen(
 
-          .collection("running_sessions")
+(Position position) {
 
-          .add({
+if (ultimaPosicion != null) {
 
-        "uid": user.uid,
+double metros =
 
-        "tiempoSegundos":
-        segundos,
+Geolocator.distanceBetween(
 
-        "tiempoTexto":
-        formatearTiempo(),
+ultimaPosicion!.latitude,
+ultimaPosicion!.longitude,
 
-        "distanciaKm":
-        distanciaKm,
+position.latitude,
+position.longitude,
+);
 
-        "calorias":
-        calorias,
+setState(() {
 
-        "ruta":
-        ruta,
+distanciaKm +=
+metros / 1000;
 
-        "creado":
-        Timestamp.now(),
-      });
+calorias =
+distanciaKm * 60;
+});
+}
 
-    } catch (e) {
+ultimaPosicion = position;
+},
+);
+}
 
-      print(e);
-    }
-  }
+Future<void> detenerCarrera() async {
 
-  String formatearTiempo() {
+timer?.cancel();
 
-    final horas =
-    (segundos ~/ 3600)
+posicionStream?.cancel();
 
-        .toString()
+setState(() {
 
-        .padLeft(2, '0');
+running = false;
+});
 
-    final minutos =
-    ((segundos % 3600) ~/ 60)
+await guardarSesion();
 
-        .toString()
+if (!mounted) return;
 
-        .padLeft(2, '0');
+ScaffoldMessenger.of(context)
 
-    final seg =
-    (segundos % 60)
+    .showSnackBar(
 
-        .toString()
+const SnackBar(
 
-        .padLeft(2, '0');
+backgroundColor: Colors.green,
 
-    return "$horas:$minutos:$seg";
-  }
+content: Text(
+"Sesión guardada",
+),
+),
+);
+}
 
-  Widget cardInfo({
+Future<void> guardarSesion() async {
 
-    required String titulo,
+try {
 
-    required String valor,
+final user =
+FirebaseAuth.instance
+    .currentUser;
 
-    required IconData icono,
+if (user == null) return;
 
-    required Color color,
-  }) {
+final ahora = DateTime.now();
 
-    return Container(
+await FirebaseFirestore.instance
 
-      padding:
-      const EdgeInsets.all(20),
+    .collection(
+"running_sessions")
 
-      decoration: BoxDecoration(
+    .add({
 
-        color:
-        const Color(0xFF111C30),
+"uid": user.uid,
 
-        borderRadius:
-        BorderRadius.circular(28),
+"fecha":
+"${ahora.day}/${ahora.month}/${ahora.year}",
 
-        border: Border.all(
+"hora":
+"${ahora.hour.toString().padLeft(2, '0')}:"
+"${ahora.minute.toString().padLeft(2, '0')}",
 
-          color:
-          color.withOpacity(0.18),
-        ),
-      ),
+"tiempoSegundos":
+segundos,
 
-      child: Column(
+"tiempoTexto":
+formatearTiempo(),
 
-        children: [
+"distanciaKm":
+distanciaKm,
 
-          Icon(
+"calorias":
+calorias,
 
-            icono,
+"ritmo":
 
-            color: color,
+segundos > 0
 
-            size: 34,
-          ),
+? distanciaKm /
+(segundos / 3600)
 
-          const SizedBox(height: 18),
+    : 0,
 
-          Text(
+"creado":
+Timestamp.now(),
+});
 
-            valor,
+} catch (e) {
 
-            style: const TextStyle(
+print(e);
+}
+}
 
-              color: Colors.white,
+String formatearTiempo() {
 
-              fontSize: 24,
+final horas =
+(segundos ~/ 3600)
 
-              fontWeight:
-              FontWeight.bold,
-            ),
-          ),
+    .toString()
 
-          const SizedBox(height: 8),
+    .padLeft(2, '0');
 
-          Text(
+final minutos =
+((segundos % 3600) ~/ 60)
 
-            titulo,
+    .toString()
 
-            style: const TextStyle(
+    .padLeft(2, '0');
 
-              color: Colors.white54,
+final seg =
+(segundos % 60)
 
-              fontSize: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+    .toString()
 
-  @override
-  void dispose() {
+    .padLeft(2, '0');
 
-    timer?.cancel();
+return "$horas:$minutos:$seg";
+}
 
-    super.dispose();
-  }
+Widget cardInfo({
 
-  @override
-  Widget build(BuildContext context) {
+required String titulo,
 
-    return Scaffold(
+required String valor,
 
-      backgroundColor:
-      const Color(0xFF071120),
+required IconData icono,
 
-      appBar: AppBar(
+required Color color,
+}) {
 
-        backgroundColor:
-        Colors.transparent,
+return Container(
 
-        elevation: 0,
+padding:
+const EdgeInsets.all(20),
 
-        title:
-        const Text(
-          "Running",
-        ),
+decoration: BoxDecoration(
 
-        actions: [
+color:
+const Color(0xFF111C30),
 
-          IconButton(
+borderRadius:
+BorderRadius.circular(28),
 
-            onPressed: () {
+border: Border.all(
 
-              Navigator.push(
+color:
+color.withOpacity(0.18),
+),
+),
 
-                context,
+child: Column(
 
-                MaterialPageRoute(
+mainAxisAlignment:
+MainAxisAlignment.center,
 
-                  builder: (_) =>
-                  const RunningHistoryScreen(),
-                ),
-              );
-            },
+children: [
 
-            icon: const Icon(
-              Icons.history,
-            ),
-          ),
-        ],
-      ),
+Icon(
 
-      body: Padding(
+icono,
 
-        padding:
-        const EdgeInsets.all(22),
+color: color,
 
-        child: Column(
+size: 34,
+),
 
-          children: [
+const SizedBox(height: 18),
 
-            Container(
+Text(
 
-              width: double.infinity,
+valor,
 
-              padding:
-              const EdgeInsets.all(28),
+style: const TextStyle(
 
-              decoration: BoxDecoration(
+color: Colors.white,
 
-                gradient: LinearGradient(
+fontSize: 24,
 
-                  colors: [
+fontWeight:
+FontWeight.bold,
+),
+),
 
-                    Colors.cyan
-                        .withOpacity(0.18),
+const SizedBox(height: 8),
 
-                    Colors.blue
-                        .withOpacity(0.08),
-                  ],
+Text(
 
-                  begin: Alignment.topLeft,
+titulo,
 
-                  end: Alignment.bottomRight,
-                ),
+style: const TextStyle(
 
-                borderRadius:
-                BorderRadius.circular(35),
+color: Colors.white54,
 
-                border: Border.all(
+fontSize: 15,
+),
+),
+],
+),
+);
+}
 
-                  color:
-                  Colors.cyan
-                      .withOpacity(0.15),
-                ),
-              ),
+@override
+void dispose() {
 
-              child: Column(
+timer?.cancel();
 
-                children: [
+posicionStream?.cancel();
 
-                  const Text(
+super.dispose();
+}
 
-                    "Tiempo",
+@override
+Widget build(BuildContext context) {
 
-                    style: TextStyle(
+return Scaffold(
 
-                      color:
-                      Colors.white54,
+backgroundColor:
+const Color(0xFF071120),
 
-                      fontSize: 18,
-                    ),
-                  ),
+appBar: AppBar(
 
-                  const SizedBox(height: 12),
+backgroundColor:
+Colors.transparent,
 
-                  Text(
+elevation: 0,
 
-                    formatearTiempo(),
+title:
+const Text(
+"Running",
+),
 
-                    style: const TextStyle(
+actions: [
 
-                      color: Colors.white,
+IconButton(
 
-                      fontSize: 48,
+onPressed: () {
 
-                      fontWeight:
-                      FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+Navigator.push(
 
-            const SizedBox(height: 28),
+context,
 
-            Expanded(
+MaterialPageRoute(
 
-              child: GridView.count(
+builder: (_) =>
+const RunningHistoryScreen(),
+),
+);
+},
 
-                crossAxisCount: 2,
+icon: const Icon(
+Icons.history,
+),
+),
+],
+),
 
-                crossAxisSpacing: 18,
+body: Padding(
 
-                mainAxisSpacing: 18,
+padding:
+const EdgeInsets.all(22),
 
-                childAspectRatio: 1.1,
+child: Column(
 
-                children: [
+children: [
 
-                  cardInfo(
+Container(
 
-                    titulo: "Distancia",
+width: double.infinity,
 
-                    valor:
-                    "${distanciaKm.toStringAsFixed(2)} KM",
+padding:
+const EdgeInsets.all(28),
 
-                    icono:
-                    Icons.route,
+decoration: BoxDecoration(
 
-                    color:
-                    Colors.cyan,
-                  ),
+gradient: LinearGradient(
 
-                  cardInfo(
+colors: [
 
-                    titulo: "Calorías",
+Colors.cyan
+    .withOpacity(0.18),
 
-                    valor:
-                    calorias
-                        .toStringAsFixed(0),
+Colors.blue
+    .withOpacity(0.08),
+],
 
-                    icono:
-                    Icons.local_fire_department,
+begin:
+Alignment.topLeft,
 
-                    color:
-                    Colors.orange,
-                  ),
+end:
+Alignment.bottomRight,
+),
 
-                  cardInfo(
+borderRadius:
+BorderRadius.circular(35),
 
-                    titulo: "Velocidad",
+border: Border.all(
 
-                    valor:
-                    "${(distanciaKm * 10).toStringAsFixed(1)}",
+color:
+Colors.cyan
+    .withOpacity(0.15),
+),
+),
 
-                    icono:
-                    Icons.speed,
+child: Column(
 
-                    color:
-                    Colors.green,
-                  ),
+children: [
 
-                  cardInfo(
+const Text(
 
-                    titulo: "Puntos GPS",
+"Tiempo",
 
-                    valor:
-                    "${ruta.length}",
+style: TextStyle(
 
-                    icono:
-                    Icons.location_on,
+color:
+Colors.white54,
 
-                    color:
-                    Colors.purple,
-                  ),
-                ],
-              ),
-            ),
+fontSize: 18,
+),
+),
 
-            const SizedBox(height: 20),
+const SizedBox(height: 12),
 
-            SizedBox(
+Text(
 
-              width: double.infinity,
+formatearTiempo(),
 
-              height: 65,
+style: const TextStyle(
 
-              child: ElevatedButton(
+color: Colors.white,
 
-                style:
-                ElevatedButton.styleFrom(
+fontSize: 48,
 
-                  backgroundColor:
+fontWeight:
+FontWeight.bold,
+),
+),
+],
+),
+),
 
-                  running
+const SizedBox(height: 28),
 
-                      ? Colors.red
+Expanded(
 
-                      : Colors.cyan,
+child: GridView.count(
 
-                  shape:
-                  RoundedRectangleBorder(
+crossAxisCount: 2,
 
-                    borderRadius:
-                    BorderRadius.circular(
-                      22,
-                    ),
-                  ),
-                ),
+crossAxisSpacing: 18,
 
-                onPressed:
+mainAxisSpacing: 18,
 
-                running
+childAspectRatio: 1.1,
 
-                    ? detenerCarrera
+children: [
 
-                    : iniciarCarrera,
+cardInfo(
 
-                child: Text(
+titulo: "Distancia",
 
-                  running
+valor:
+"${distanciaKm.toStringAsFixed(2)} KM",
 
-                      ? "DETENER"
+icono:
+Icons.route,
 
-                      : "INICIAR",
+color:
+Colors.cyan,
+),
 
-                  style: const TextStyle(
+cardInfo(
 
-                    color: Colors.white,
+titulo: "Calorías",
 
-                    fontSize: 20,
+valor:
+calorias
+    .toStringAsFixed(0),
 
-                    fontWeight:
-                    FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+icono:
+Icons.local_fire_department,
+
+color:
+Colors.orange,
+),
+
+cardInfo(
+
+titulo: "Velocidad",
+
+valor:
+
+"${(segundos > 0
+
+? distanciaKm /
+(segundos / 3600)
+
+    : 0).toStringAsFixed(1)} km/h",
+
+icono:
+Icons.speed,
+
+color:
+Colors.green,
+),
+
+cardInfo(
+
+titulo: "GPS",
+
+valor:
+running
+? "Activo"
+    : "Inactivo",
+
+icono:
+Icons.location_on,
+
+color:
+Colors.purple,
+),
+],
+),
+),
+
+const SizedBox(height: 20),
+
+SizedBox(
+
+width: double.infinity,
+
+height: 65,
+
+child: ElevatedButton(
+
+style:
+ElevatedButton.styleFrom(
+
+backgroundColor:
+
+running
+
+? Colors.red
+
+    : Colors.cyan,
+
+shape:
+RoundedRectangleBorder(
+
+borderRadius:
+BorderRadius.circular(
+22,
+),
+),
+),
+
+onPressed:
+
+running
+
+? detenerCarrera
+
+    : iniciarCarrera,
+
+child: Text(
+
+running
+
+? "DETENER"
+
+    : "INICIAR",
+
+style: const TextStyle(
+
+color: Colors.white,
+
+fontSize: 20,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+),
+),
+],
+),
+),
+);
+}
 }
