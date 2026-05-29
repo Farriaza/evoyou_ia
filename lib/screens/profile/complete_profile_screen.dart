@@ -564,6 +564,7 @@ class _CompleteProfileScreenState
                   "Definir",
 
                   "Perder peso",
+
                 ],
 
                 onChanged: (value) {

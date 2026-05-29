@@ -1,17 +1,12 @@
-// home_screen.dart
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../auth/login_screen.dart';
-
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
-
 import '../look/look_screen.dart';
 import '../exercise/exercise_screen.dart';
 import '../running/running_screen.dart';
@@ -19,206 +14,147 @@ import '../nutrition/nutrition_screen.dart';
 import '../rutina/rutina_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() =>
-      _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState
-    extends State<HomeScreen> {
-
+class _HomeScreenState extends State<HomeScreen> {
   String apodo = "";
-
   String foto = "";
-
   bool loading = true;
-
   int currentIndex = 0;
 
   @override
   void initState() {
-
     super.initState();
-
     cargarUsuario();
   }
 
   @override
   void didChangeDependencies() {
-
     super.didChangeDependencies();
-
     cargarUsuario();
   }
 
   Future<void> cargarUsuario() async {
-
     try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
 
-      final user =
-          FirebaseAuth.instance.currentUser;
-
-      if(user == null) return;
-
-      final doc =
-      await FirebaseFirestore.instance
-
+      final doc = await FirebaseFirestore.instance
           .collection("usuarios")
-
           .doc(user.uid)
-
           .get();
 
-      if(!mounted) return;
+      if (!mounted) return;
 
       setState(() {
-
-        apodo =
-            doc.data()?["apodo"] ?? "";
-
-        foto =
-            doc.data()?["fotoPerfil"] ?? "";
-
+        apodo = doc.data()?["apodo"] ?? "";
+        foto = doc.data()?["fotoPerfil"] ?? "";
         loading = false;
       });
-
-    } catch(e){
-
+    } catch (e) {
       print(e);
     }
   }
 
   Future<void> logout() async {
-
     await FirebaseAuth.instance.signOut();
-
     if (!mounted) return;
-
     Navigator.pushReplacement(
-
       context,
-
-      MaterialPageRoute(
-        builder: (_) =>
-        const LoginScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
 
-  Widget menuCard({
+  void _irAPerfil() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ProfileScreen()),
+    ).then((_) async => await cargarUsuario());
+  }
 
+  Widget _menuCard({
     required String titulo,
-
     required IconData icono,
-
     required Color color,
-
     required VoidCallback onTap,
+    String? badge,
   }) {
-
     return GestureDetector(
-
       onTap: onTap,
-
       child: AnimatedContainer(
-
-        duration:
-        const Duration(milliseconds: 250),
-
+        duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
-
         decoration: BoxDecoration(
-
-          color:
-          const Color(0xFF101B31),
-
-          borderRadius:
-          BorderRadius.circular(30),
-
-          border: Border.all(
-
-            color:
-            color.withOpacity(0.18),
-
-            width: 1.2,
-          ),
-
+          color: const Color(0xFF0D1A2D),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: color.withOpacity(0.15), width: 1),
           boxShadow: [
-
             BoxShadow(
-
-              color:
-              color.withOpacity(0.05),
-
-              blurRadius: 25,
-
+              color: color.withOpacity(0.06),
+              blurRadius: 20,
               spreadRadius: 1,
-
-              offset: const Offset(0, 8),
+              offset: const Offset(0, 6),
             ),
           ],
         ),
-
-        child: Column(
-
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-
+        child: Stack(
           children: [
-
-            Container(
-
-              padding:
-              const EdgeInsets.all(16),
-
-              decoration: BoxDecoration(
-
-                shape: BoxShape.circle,
-
-                gradient: LinearGradient(
-
-                  colors: [
-
-                    color.withOpacity(0.20),
-
-                    color.withOpacity(0.06),
-                  ],
-
-                  begin: Alignment.topLeft,
-
-                  end: Alignment.bottomRight,
+            // Fondo degradado sutil
+            Positioned(
+              top: -20,
+              right: -20,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color.withOpacity(0.06),
                 ),
               ),
-
-              child: Icon(
-
-                icono,
-
-                color: color,
-
-                size: 34,
-              ),
             ),
-
-            const SizedBox(height: 20),
-
-            Text(
-
-              titulo,
-
-              style: const TextStyle(
-
-                color: Colors.white,
-
-                fontSize: 17,
-
-                fontWeight:
-                FontWeight.w600,
-
-                letterSpacing: 0.4,
+            // Contenido
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: color.withOpacity(0.12),
+                    ),
+                    child: Icon(icono, color: color, size: 22),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        titulo,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                      if (badge != null)
+                        Text(
+                          badge,
+                          style: TextStyle(
+                            color: color.withOpacity(0.8),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -229,277 +165,135 @@ class _HomeScreenState
 
   @override
   Widget build(BuildContext context) {
+    final tieneFoto = foto.isNotEmpty && File(foto).existsSync();
 
     return Scaffold(
-
-      backgroundColor:
-      const Color(0xFF071120),
-
-      bottomNavigationBar:
-      BottomNavigationBar(
-
-        currentIndex: currentIndex,
-
-        backgroundColor:
-        const Color(0xFF111C30),
-
-        selectedItemColor:
-        Colors.cyan,
-
-        unselectedItemColor:
-        Colors.white54,
-
-        selectedFontSize: 13,
-
-        unselectedFontSize: 12,
-
-        elevation: 0,
-
-        type:
-        BottomNavigationBarType.fixed,
-
-        onTap: (index) {
-
-          setState(() {
-
-            currentIndex = index;
-          });
-
-          // PROGRESO
-
-          if (index == 0) {
-
-            ScaffoldMessenger.of(context)
-
-                .showSnackBar(
-
-              const SnackBar(
-
-                content: Text(
-                  "Módulo progreso próximamente",
-                ),
-              ),
-            );
-          }
-
-          // PERFIL
-
-          if (index == 1) {
-
-            Navigator.push(
-
-              context,
-
-              MaterialPageRoute(
-                builder: (_) =>
-                const ProfileScreen(),
-              ),
-
-            ).then((_) async {
-
-              await cargarUsuario();
-            });
-          }
-
-          // CONFIG
-
-          if (index == 2) {
-
-            Navigator.push(
-
-              context,
-
-              MaterialPageRoute(
-                builder: (_) =>
-                const SettingsScreen(),
-              ),
-            );
-          }
-        },
-
-        items: const [
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-              Icons.insights,
-            ),
-
-            label: "Progreso",
+      backgroundColor: const Color(0xFF071120),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF0D1A2D),
+          border: Border(
+            top: BorderSide(color: Colors.white.withOpacity(0.06), width: 1),
           ),
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-              Icons.person_outline,
-            ),
-
-            label: "Perfil",
-          ),
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-              Icons.tune,
-            ),
-
-            label: "Config",
-          ),
-        ],
-      ),
-
-      body: loading
-
-          ? const Center(
-
-        child:
-        CircularProgressIndicator(
-          color: Colors.cyan,
         ),
-      )
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          backgroundColor: Colors.transparent,
+          selectedItemColor: Colors.cyan,
+          unselectedItemColor: Colors.white38,
+          selectedFontSize: 11,
+          unselectedFontSize: 11,
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            setState(() => currentIndex = index);
 
+            if (index == 0) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Módulo progreso próximamente")),
+              );
+            }
+            if (index == 1) _irAPerfil();
+            if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.insights_outlined),
+              activeIcon: Icon(Icons.insights),
+              label: "Progreso",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: "Perfil",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.tune_outlined),
+              activeIcon: Icon(Icons.tune),
+              label: "Config",
+            ),
+          ],
+        ),
+      ),
+      body: loading
+          ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
           : SafeArea(
-
         child: Padding(
-
-          padding:
-          const EdgeInsets.all(22),
-
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           child: Column(
-
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              // Header
               Row(
-
                 children: [
-
                   GestureDetector(
-
-                    onTap: () {
-
-                      Navigator.push(
-
-                        context,
-
-                        MaterialPageRoute(
-                          builder: (_) =>
-                          const ProfileScreen(),
-                        ),
-
-                      ).then((_) async {
-
-                        await cargarUsuario();
-                      });
-                    },
-
+                    onTap: _irAPerfil,
                     child: Container(
-
-                      padding:
-                      const EdgeInsets.all(3),
-
+                      padding: const EdgeInsets.all(2.5),
                       decoration: BoxDecoration(
-
                         shape: BoxShape.circle,
-
-                        border: Border.all(
-                          color: Colors.cyan
-                              .withOpacity(0.6),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.cyan.withOpacity(0.8),
+                            Colors.blue.withOpacity(0.5),
+                          ],
                         ),
                       ),
-
                       child: CircleAvatar(
-
                         key: UniqueKey(),
-
-                        radius: 34,
-
-                        backgroundColor:
-                        Colors.white10,
-
-                        backgroundImage:
-
-                        foto.isNotEmpty &&
-                            File(foto).existsSync()
-
-                            ? MemoryImage(
-
-                          File(
-                            foto,
-                          ).readAsBytesSync(),
-                        )
-
+                        radius: 26,
+                        backgroundColor: Colors.white10,
+                        backgroundImage: tieneFoto
+                            ? MemoryImage(File(foto).readAsBytesSync())
                             : null,
-
-                        child:
-
-                        foto.isEmpty ||
-
-                            !File(foto)
-                                .existsSync()
-
-                            ? const Icon(
-
-                          Icons.person,
-
-                          size: 30,
-
-                          color:
-                          Colors.white,
-                        )
-
+                        child: !tieneFoto
+                            ? const Icon(Icons.person,
+                            size: 24, color: Colors.white)
                             : null,
                       ),
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 18,
-                  ),
+                  const SizedBox(width: 14),
 
                   Expanded(
-
                     child: Column(
-
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .start,
-
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-                        Text(
-
-                          apodo,
-
-                          style:
-                          const TextStyle(
-                            color:
-                            Colors.white,
-                            fontSize:
-                            28,
-                            fontWeight:
-                            FontWeight
-                                .bold,
-                            letterSpacing:
-                            0.4,
-                          ),
+                        Row(
+                          children: [
+                            const Text(
+                              "Hola, ",
+                              style: TextStyle(
+                                color: Colors.white54,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              apodo,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              " 👋",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
                         ),
-
-                        const SizedBox(
-                          height: 5,
-                        ),
-
+                        const SizedBox(height: 2),
                         const Text(
-
                           "Tu evolución comienza hoy",
-
-                          style:
-                          TextStyle(
-                            color:
-                            Colors.white54,
-                            fontSize:
-                            14,
-                            letterSpacing:
-                            0.2,
+                          style: TextStyle(
+                            color: Colors.white38,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -507,197 +301,102 @@ class _HomeScreenState
                   ),
 
                   IconButton(
-
                     onPressed: logout,
-
                     icon: const Icon(
-
                       Icons.logout_rounded,
-
-                      color:
-                      Colors.white70,
+                      color: Colors.white38,
+                      size: 20,
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(
-                height: 30,
+              const SizedBox(height: 20),
+
+              // Título sección
+              const Text(
+                "Módulos",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
               ),
 
+              const SizedBox(height: 12),
+
+              // Grid
               Expanded(
-
                 child: GridView(
-
-                  physics:
-                  const BouncingScrollPhysics(),
-
+                  physics: const BouncingScrollPhysics(),
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
-
                     crossAxisCount: 2,
-
-                    mainAxisSpacing: 18,
-
-                    crossAxisSpacing: 18,
-
-                    childAspectRatio: 1,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.1,
                   ),
-
                   children: [
-
-                    // RUTINA
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Rutina",
-
-                      icono:
-                      Icons.fitness_center,
-
+                      icono: Icons.fitness_center,
                       color: Colors.cyan,
-
-                      onTap: () {
-
-                        Navigator.push(
-
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                            const RutinaScreen(),
-                          ),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const RutinaScreen()),
+                      ),
                     ),
-
-                    // EJERCICIOS
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Ejercicios",
-
-                      icono:
-                      Icons.sports_gymnastics,
-
+                      icono: Icons.sports_gymnastics,
                       color: Colors.orange,
-
-                      onTap: () {
-
-                        Navigator.push(
-
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                            const ExerciseScreen(),
-                          ),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const ExerciseScreen()),
+                      ),
                     ),
-
-                    // ALIMENTACION
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Alimentación",
-
-                      icono:
-                      Icons.restaurant_menu,
-
-                      color:
-                      Colors.green,
-
-                      onTap: () {
-
-                        Navigator.push(
-
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                            const NutritionScreen(),
-                          ),
-                        );
-                      },
+                      icono: Icons.restaurant_menu,
+                      color: Colors.green,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const NutritionScreen()),
+                      ),
                     ),
-
-                    // RUNNING
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Running",
-
-                      icono:
-                      Icons.directions_run_rounded,
-
+                      icono: Icons.directions_run_rounded,
                       color: Colors.redAccent,
-
-                      onTap: () {
-
-                        Navigator.push(
-
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                            const RunningScreen(),
-                          ),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const RunningScreen()),
+                      ),
                     ),
-
-                    // COACH IA
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Coach IA",
-
-                      icono:
-                      Icons.psychology,
-
-                      color:
-                      Colors.purpleAccent,
-
-                      onTap: () {
-
-                        ScaffoldMessenger.of(context)
-
-                            .showSnackBar(
-
-                          const SnackBar(
-
-                            content: Text(
-                              "Coach IA próximamente",
-                            ),
-                          ),
-                        );
-                      },
+                      icono: Icons.psychology,
+                      color: Colors.purpleAccent,
+                      badge: "Próximamente",
+                      onTap: () => ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                          content:
+                          Text("Coach IA próximamente"))),
                     ),
-
-                    // LOOK
-
-                    menuCard(
-
+                    _menuCard(
                       titulo: "Look",
-
-                      icono:
-                      Icons.auto_awesome,
-
+                      icono: Icons.auto_awesome,
                       color: Colors.blueAccent,
-
-                      onTap: () {
-
-                        Navigator.push(
-
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                            const LookScreen(),
-                          ),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const LookScreen()),
+                      ),
                     ),
                   ],
                 ),

@@ -1,89 +1,37 @@
 import 'package:flutter/material.dart';
 
-class NutritionScreen extends StatelessWidget {
+import 'nutrition_menu_screen.dart';
+import 'evoyou_plan_screen.dart';
+import 'shopping_list_screen.dart';
+import 'nutrition_calendar_screen.dart';
+
+class NutritionScreen extends StatefulWidget {
 
   const NutritionScreen({super.key});
 
   @override
+  State<NutritionScreen> createState() =>
+      _NutritionScreenState();
+}
+
+class _NutritionScreenState
+    extends State<NutritionScreen> {
+
+  int selectedTab = 0;
+
+  final List<Widget> pages = const [
+
+    NutritionMenuScreen(),
+
+    EvoYouPlanScreen(),
+
+    ShoppingListScreen(),
+
+    NutritionCalendarScreen(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-
-    final List<Map<String, dynamic>> recommendedFoods = [
-
-      {
-        "title": "Pollo",
-        "icon": Icons.set_meal,
-        "description": "Alto en proteína y bajo en grasa.",
-      },
-
-      {
-        "title": "Avena",
-        "icon": Icons.breakfast_dining,
-        "description": "Excelente fuente de energía.",
-      },
-
-      {
-        "title": "Huevos",
-        "icon": Icons.egg,
-        "description": "Proteína ideal para músculo.",
-      },
-
-      {
-        "title": "Frutas",
-        "icon": Icons.apple,
-        "description": "Vitaminas y antioxidantes.",
-      },
-
-      {
-        "title": "Agua",
-        "icon": Icons.water_drop,
-        "description": "Mantiene hidratado el cuerpo.",
-      },
-
-      {
-        "title": "Arroz",
-        "icon": Icons.rice_bowl,
-        "description": "Buen carbohidrato para energía.",
-      },
-    ];
-
-    final List<Map<String, dynamic>> badFoods = [
-
-      {
-        "title": "Comida rápida",
-        "icon": Icons.fastfood,
-        "description": "Alta en grasas y sodio.",
-      },
-
-      {
-        "title": "Bebidas azucaradas",
-        "icon": Icons.local_drink,
-        "description": "Exceso de azúcar innecesaria.",
-      },
-
-      {
-        "title": "Dulces",
-        "icon": Icons.cake,
-        "description": "Mucho azúcar y pocas proteínas.",
-      },
-
-      {
-        "title": "Alcohol",
-        "icon": Icons.no_drinks,
-        "description": "Afecta recuperación muscular.",
-      },
-
-      {
-        "title": "Papas fritas",
-        "icon": Icons.lunch_dining,
-        "description": "Altas en calorías y aceite.",
-      },
-
-      {
-        "title": "Ultra procesados",
-        "icon": Icons.warning,
-        "description": "Pocos nutrientes reales.",
-      },
-    ];
 
     return Scaffold(
 
@@ -91,7 +39,7 @@ class NutritionScreen extends StatelessWidget {
 
       appBar: AppBar(
 
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF071120),
 
         elevation: 0,
 
@@ -99,259 +47,148 @@ class NutritionScreen extends StatelessWidget {
 
         title: const Text(
 
-          "Alimentación",
+          "Nutrición",
 
           style: TextStyle(
-            color: Colors.white,
+
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
 
-      body: SingleChildScrollView(
-
-        padding: const EdgeInsets.all(18),
-
-        child: Column(
-
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
-
-          children: [
-
-            Container(
-
-              width: double.infinity,
-
-              padding: const EdgeInsets.all(22),
-
-              decoration: BoxDecoration(
-
-                borderRadius:
-                BorderRadius.circular(25),
-
-                gradient: const LinearGradient(
-
-                  colors: [
-                    Color(0xFF00C6FF),
-                    Color(0xFF0072FF),
-                  ],
-                ),
-              ),
-
-              child: const Column(
-
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
-
-                children: [
-
-                  Icon(
-                    Icons.restaurant,
-                    color: Colors.white,
-                    size: 45,
-                  ),
-
-                  SizedBox(height: 15),
-
-                  Text(
-
-                    "Nutrición Inteligente",
-
-                    style: TextStyle(
-
-                      color: Colors.white,
-
-                      fontSize: 28,
-
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-
-                  Text(
-
-                    "Mejora tu físico combinando entrenamiento y buena alimentación.",
-
-                    style: TextStyle(
-
-                      color: Colors.white70,
-
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            const Text(
-
-              "Alimentos Recomendados",
-
-              style: TextStyle(
-
-                color: Colors.greenAccent,
-
-                fontSize: 24,
-
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 18),
-
-            ...recommendedFoods.map(
-
-                  (food) => foodCard(
-
-                title: food["title"],
-
-                description:
-                food["description"],
-
-                icon: food["icon"],
-
-                color: Colors.greenAccent,
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            const Text(
-
-              "Alimentos No Recomendados",
-
-              style: TextStyle(
-
-                color: Colors.redAccent,
-
-                fontSize: 24,
-
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 18),
-
-            ...badFoods.map(
-
-                  (food) => foodCard(
-
-                title: food["title"],
-
-                description:
-                food["description"],
-
-                icon: food["icon"],
-
-                color: Colors.redAccent,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  static Widget foodCard({
-
-    required String title,
-
-    required String description,
-
-    required IconData icon,
-
-    required Color color,
-  }) {
-
-    return Container(
-
-      margin: const EdgeInsets.only(bottom: 16),
-
-      padding: const EdgeInsets.all(18),
-
-      decoration: BoxDecoration(
-
-        color: const Color(0xFF111C30),
-
-        borderRadius:
-        BorderRadius.circular(22),
-
-        border: Border.all(
-          color: Colors.white10,
-        ),
-      ),
-
-      child: Row(
+      body: Column(
 
         children: [
 
           Container(
 
-            width: 60,
+            margin: const EdgeInsets.all(16),
 
-            height: 60,
+            padding: const EdgeInsets.all(6),
 
             decoration: BoxDecoration(
 
-              color: color.withOpacity(0.15),
+              color: const Color(0xFF111C30),
 
               borderRadius:
-              BorderRadius.circular(18),
+              BorderRadius.circular(20),
             ),
 
-            child: Icon(
-              icon,
-              color: color,
-              size: 30,
-            ),
-          ),
-
-          const SizedBox(width: 18),
-
-          Expanded(
-
-            child: Column(
-
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
+            child: Row(
 
               children: [
 
-                Text(
-
-                  title,
-
-                  style: const TextStyle(
-
-                    color: Colors.white,
-
-                    fontSize: 18,
-
-                    fontWeight: FontWeight.bold,
-                  ),
+                _tabButton(
+                  index: 0,
+                  title: "Menú",
+                  icon: Icons.restaurant_menu,
                 ),
 
-                const SizedBox(height: 6),
+                _tabButton(
+                  index: 1,
+                  title: "Plan",
+                  icon: Icons.auto_awesome,
+                ),
 
-                Text(
+                _tabButton(
+                  index: 2,
+                  title: "Compras",
+                  icon: Icons.shopping_cart,
+                ),
 
-                  description,
-
-                  style: const TextStyle(
-
-                    color: Colors.white70,
-
-                    fontSize: 14,
-                  ),
+                _tabButton(
+                  index: 3,
+                  title: "Calendario",
+                  icon: Icons.calendar_month,
                 ),
               ],
             ),
           ),
+
+          Expanded(
+            child: pages[selectedTab],
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _tabButton({
+
+    required int index,
+
+    required String title,
+
+    required IconData icon,
+  }) {
+
+    final selected =
+        selectedTab == index;
+
+    return Expanded(
+
+      child: GestureDetector(
+
+        onTap: () {
+
+          setState(() {
+
+            selectedTab = index;
+          });
+        },
+
+        child: AnimatedContainer(
+
+          duration:
+          const Duration(milliseconds: 250),
+
+          padding:
+          const EdgeInsets.symmetric(
+            vertical: 12,
+          ),
+
+          decoration: BoxDecoration(
+
+            color: selected
+                ? const Color(0xFF00C6FF)
+                : Colors.transparent,
+
+            borderRadius:
+            BorderRadius.circular(16),
+          ),
+
+          child: Column(
+
+            mainAxisSize:
+            MainAxisSize.min,
+
+            children: [
+
+              Icon(
+
+                icon,
+
+                color: Colors.white,
+
+                size: 22,
+              ),
+
+              const SizedBox(height: 4),
+
+              Text(
+
+                title,
+
+                style: const TextStyle(
+
+                  color: Colors.white,
+
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
