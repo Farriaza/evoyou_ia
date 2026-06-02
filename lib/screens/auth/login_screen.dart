@@ -557,54 +557,91 @@ class _LoginScreenState
 
                 const SizedBox(height: 12),
 
-                Align(
+                // ── FILA: ¿Olvidaste tu contraseña? ←→ Crear cuenta ──────
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: [
 
-                  alignment:
-                  Alignment.centerRight,
+                    // ¿Olvidaste tu contraseña?
+                    TextButton(
 
-                  child: TextButton(
+                      onPressed: () {
 
-                    onPressed: () {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(
 
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(
+                          const SnackBar(
 
-                        const SnackBar(
+                            backgroundColor:
+                            Color(0xFF101826),
 
-                          backgroundColor:
-                          Color(0xFF101826),
+                            content: Text(
 
-                          content: Text(
+                              "Recuperación próximamente",
 
-                            "Recuperación próximamente",
-
-                            style: TextStyle(
-                              color:
-                              Colors.white,
+                              style: TextStyle(
+                                color:
+                                Colors.white,
+                              ),
                             ),
                           ),
+                        );
+                      },
+
+                      child: const Text(
+
+                        "¿Olvidaste tu contraseña?",
+
+                        style: TextStyle(
+
+                          color:
+                          Color(0xFF00D9FF),
+
+                          fontWeight:
+                          FontWeight.w600,
+
+                          fontSize: 14,
                         ),
-                      );
-                    },
-
-                    child: const Text(
-
-                      "¿Olvidaste tu contraseña?",
-
-                      style: TextStyle(
-
-                        color:
-                        Color(0xFF00D9FF),
-
-                        fontWeight:
-                        FontWeight.w600,
-
-                        fontSize: 14,
                       ),
                     ),
-                  ),
+
+                    // Crear cuenta
+                    TextButton(
+
+                      onPressed: () {
+
+                        Navigator.push(
+
+                          context,
+
+                          MaterialPageRoute(
+                            builder: (_) =>
+                            const RegisterScreen(),
+                          ),
+                        );
+                      },
+
+                      child: const Text(
+
+                        "Crear cuenta",
+
+                        style: TextStyle(
+
+                          color:
+                          Colors.white60,
+
+                          fontSize: 14,
+
+                          fontWeight:
+                          FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                // ─────────────────────────────────────────────────────────
 
                 const SizedBox(height: 30),
 
@@ -695,42 +732,6 @@ class _LoginScreenState
                         fontWeight:
                         FontWeight.bold,
                       ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                // CREAR CUENTA
-
-                TextButton(
-
-                  onPressed: () {
-
-                    Navigator.push(
-
-                      context,
-
-                      MaterialPageRoute(
-                        builder: (_) =>
-                        const RegisterScreen(),
-                      ),
-                    );
-                  },
-
-                  child: const Text(
-
-                    "Crear cuenta",
-
-                    style: TextStyle(
-
-                      color:
-                      Colors.white60,
-
-                      fontSize: 17,
-
-                      fontWeight:
-                      FontWeight.w600,
                     ),
                   ),
                 ),

@@ -1,4 +1,6 @@
+// lib/screens/complete_profile_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,36 +13,63 @@ class CompleteProfileScreen extends StatefulWidget {
   State<CompleteProfileScreen> createState() => _CompleteProfileScreenState();
 }
 
-class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
+class _CompleteProfileScreenState extends State<CompleteProfileScreen>
+    with TickerProviderStateMixin {
+
+  // ── Paleta de Colores ──────────────────────────────────────────────────────
+  static const Color _bgPrincipal   = Color(0xFF071120);
+  static const Color _bgSecundario  = Color(0xFF0B1628);
+  static const Color _bgBurbuja     = Color(0xFF0F2036);
+  static const Color _cyanAccent    = Color(0xFF00D4E8);
+  static const Color _avatarBg      = Color(0xFF0A1E35);
+  static const Color _avatarBorder  = Color(0xFF00D4E8);
+  // ──────────────────────────────────────────────────────────────────────────
+
   final ScrollController scrollController = ScrollController();
-  final TextEditingController apodoManualController = TextEditingController();
+  final TextEditingController chatInputController = TextEditingController();
 
-  String nombre = "";
-  String apellido = "";
-  String correo = "";
-  String fotoPerfil = "";
+  late AnimationController _typingCtrl;
+  bool _mostrarTyping = false;
 
-  int paso = 0;
-  bool loading = false;
-  bool escribiendoApodo = false;
+  String nombre              = "";
+  String apellido            = "";
+  String apodo               = "";
+  String correo              = "";
+  String fotoPerfil          = "";
 
-  String apodo = "";
-  String altura = "";
-  String peso = "";
-  String objetivo = "";
-  String experiencia = "";
-  String frecuencia = "";
-  String lugarEntrenamiento = "";
+  int paso                   = 0;
+  bool loading               = false;
+
+  String lugarEntrenamiento  = "";
+  String frecuencia          = "";
   String tiempoEntrenamiento = "";
-  String lesion = "";
+  String experiencia         = "";
+  String objetivo            = "";
+  String lesion              = "";
+  String altura              = "";
+  String peso                = "";
 
   final List<Map<String, String>> mensajes = [];
 
   @override
   void initState() {
     super.initState();
+    _typingCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat();
     cargarUsuario();
   }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    chatInputController.dispose();
+    _typingCtrl.dispose();
+    super.dispose();
+  }
+
+  // ── Datos Firebase ────────────────────────────────────────────────────────
 
   Future<void> cargarUsuario() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -55,51 +84,29 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     if (data == null) return;
 
     setState(() {
-      nombre = data["nombre"] ?? "";
-      apellido = data["apellido"] ?? "";
-      correo = data["correo"] ?? user.email ?? "";
-      apodo = data["apodo"] ?? "";
-      fotoPerfil = data["fotoPerfil"] ?? "";
-      altura = data["altura"] ?? "";
-      peso = data["peso"] ?? "";
-      objetivo = data["objetivo"] ?? "";
-      experiencia = data["experiencia"] ?? "";
-      frecuencia = data["frecuencia"] ?? "";
-      lugarEntrenamiento = data["lugarEntrenamiento"] ?? "";
-      tiempoEntrenamiento = data["tiempoEntrenamiento"] ?? "";
-      lesion = data["lesion"] ?? "";
+      nombre              = data["nombre"]            ?? "";
+      apellido            = data["apellido"]          ?? "";
+      apodo               = data["apodo"]             ?? "";
+      correo              = data["correo"]            ?? user.email ?? "";
+      fotoPerfil          = data["fotoPerfil"]        ?? "";
     });
 
-    agregarMensajeEvo(
-      "Hola ${nombre.isNotEmpty ? nombre : "campeón"} 👋\n\nSoy Evo, tu coach personal.\nVoy a conocerte un poco mejor para preparar tu plan personalizado.",
+    _mostrarMensajeConDelay(
+      "Hola, $nombreMostrar. Soy Evo, tu asistente virtual de entrenamiento. "
+          "Te guiare paso a paso para configurar tu perfil de manera correcta.\n\n"
+          "Primero, ¿donde vas a entrenar principalmente?",
     );
   }
+
+  // ── Helpers de UI ─────────────────────────────────────────────────────────
 
   String get nombreMostrar {
     if (apodo.trim().isNotEmpty) return apodo.trim();
     if (nombre.trim().isNotEmpty) return nombre.trim();
-    return "campeón";
+    return "usuario";
   }
 
-  void agregarMensajeEvo(String texto) {
-    mensajes.add({
-      "tipo": "evo",
-      "texto": texto,
-    });
-
-    moverScroll();
-  }
-
-  void agregarMensajeUsuario(String texto) {
-    mensajes.add({
-      "tipo": "usuario",
-      "texto": texto,
-    });
-
-    moverScroll();
-  }
-
-  void moverScroll() {
+  void _scrollAbajo() {
     Future.delayed(const Duration(milliseconds: 200), () {
       if (scrollController.hasClients) {
         scrollController.animateTo(
@@ -111,191 +118,147 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     });
   }
 
-  String limpiarEmoji(String texto) {
-    return texto
-        .replaceAll("🔥", "")
-        .replaceAll("💪", "")
-        .replaceAll("⚖️", "")
-        .replaceAll("🏃", "")
-        .replaceAll("🏠", "")
-        .replaceAll("🏋️", "")
-        .replaceAll("🔄", "")
-        .trim();
+  Future<void> _mostrarMensajeConDelay(String texto, {int delayMs = 1000}) async {
+    setState(() {
+      _mostrarTyping = true;
+    });
+    _scrollAbajo();
+
+    await Future.delayed(Duration(milliseconds: delayMs));
+
+    if (!mounted) return;
+    setState(() {
+      _mostrarTyping = false;
+      mensajes.add({"tipo": "evo", "texto": texto});
+    });
+    _scrollAbajo();
   }
 
-  void avanzar(String respuesta) {
+  void agregarMensajeUsuario(String texto) {
+    setState(() {
+      mensajes.add({"tipo": "usuario", "texto": texto});
+    });
+    _scrollAbajo();
+  }
+
+  // ── Flujo de Preguntas y Respuestas Ordenadas ─────────────────────────────
+
+  void avanzarFlujo(String respuesta) {
+    if (respuesta.trim().isEmpty) return;
     agregarMensajeUsuario(respuesta);
 
     setState(() {
       switch (paso) {
         case 0:
-          apodo = respuesta;
+          lugarEntrenamiento = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Perfecto $nombreMostrar 💪\n\n¿Cuál es tu altura?",
-          );
+          _mostrarMensajeConDelay("Entendido. ¿Cuantos dias a la semana tienes disponibles para entrenar? Escribe solo el numero.");
           break;
 
         case 1:
-          altura = respuesta.replaceAll(" cm", "");
+          frecuencia = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Bien.\n\n¿Cuál es tu peso actual?",
-          );
+          _mostrarMensajeConDelay("Perfecto. ¿Cuanto tiempo suele durar tu sesion de entrenamiento?");
           break;
 
         case 2:
-          peso = respuesta.replaceAll(" kg", "");
+          tiempoEntrenamiento = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Excelente.\n\n¿Cuál es tu objetivo principal?",
-          );
+          _mostrarMensajeConDelay("Bien. ¿Cual es tu nivel de experiencia actual en el entrenamiento?");
           break;
 
         case 3:
-          objetivo = limpiarEmoji(respuesta);
+          experiencia = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Buen objetivo, $nombreMostrar.\n\n¿Cuál es tu nivel de experiencia?",
-          );
+          _mostrarMensajeConDelay("Anotado. ¿Cual es tu objetivo principal en este momento?");
           break;
 
         case 4:
-          experiencia = respuesta;
+          objetivo = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Perfecto.\n\n¿Cuántos días por semana puedes entrenar?",
-          );
+          _mostrarMensajeConDelay("Excelente. ¿Tienes alguna lesion o limitacion fisica que deba considerar?");
           break;
 
         case 5:
-          frecuencia = respuesta;
+          lesion = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Ahora dime...\n\n¿Dónde entrenarás principalmente?",
-          );
+          _mostrarMensajeConDelay("De acuerdo, lo tomare en cuenta. Ahora pasemos a tus datos basicos. ¿Cual es tu altura en centimetros (cm)? Escribe solo el numero.");
           break;
 
         case 6:
-          lugarEntrenamiento = limpiarEmoji(respuesta);
+          altura = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Entendido.\n\n¿Cuánto dura normalmente tu entrenamiento?",
-          );
+          _mostrarMensajeConDelay("Por ultimo, ¿cual es tu peso actual en kilogramos (kg)? Escribe solo el numero.");
           break;
 
         case 7:
-          tiempoEntrenamiento = respuesta;
+          peso = respuesta;
           paso++;
-          agregarMensajeEvo(
-            "Última pregunta, $nombreMostrar.\n\n¿Tienes alguna lesión o limitación física?",
-          );
-          break;
-
-        case 8:
-          lesion = respuesta;
-          paso++;
-          agregarMensajeEvo(
-            "Excelente $nombreMostrar 💪\n\nNuestro programa se basa en planes de transformación de 3, 6, 9 y 12 meses.\n\nDesde los primeros 3 meses podrás comenzar a notar cambios si sigues nuestras indicaciones de entrenamiento, alimentación y seguimiento.\n\nTodo dependerá de tu constancia y de que trabajemos juntos en el plan.\n\nAhora pasaremos a estimar tu porcentaje de grasa corporal para personalizar mejor tu proceso.",
+          _mostrarMensajeConDelay(
+            "Perfil completado con exito, $nombreMostrar. Aqui tienes el resumen de tu configuracion:\n\n"
+                "• Lugar: $lugarEntrenamiento\n"
+                "• Frecuencia: $frecuencia dias por semana\n"
+                "• Duracion: $tiempoEntrenamiento\n"
+                "• Experiencia: $experiencia\n"
+                "• Objetivo: $objetivo\n"
+                "• Lesiones: $lesion\n"
+                "• Altura: $altura cm\n"
+                "• Peso registrado: $peso kg\n\n"
+                "Presiona el boton de abajo para guardar tu perfil de entrenamiento y comenzar.",
+            delayMs: 1200,
           );
           break;
       }
     });
   }
 
-  List<String> opcionesActuales() {
+  // Determina si el paso actual requiere alternativas o teclado de texto libre
+  bool _esPasoDeAlternativas() {
+    return paso == 0 || paso == 2 || paso == 3 || paso == 4 || paso == 5;
+  }
+
+  List<String> _obtenerAlternativas() {
     switch (paso) {
-      case 0:
-        return [
-          if (nombre.isNotEmpty) nombre,
-          if (nombre.isNotEmpty) nombre.split(" ").first,
-          "Prefiero escribirlo",
-        ];
-
-      case 1:
-        return [
-          "160 cm",
-          "165 cm",
-          "170 cm",
-          "175 cm",
-          "180 cm",
-          "185 cm",
-          "190 cm",
-        ];
-
-      case 2:
-        return [
-          "60 kg",
-          "65 kg",
-          "70 kg",
-          "75 kg",
-          "80 kg",
-          "85 kg",
-          "90 kg",
-          "95 kg",
-          "100 kg",
-          "110 kg",
-          "120 kg",
-        ];
-
-      case 3:
-        return [
-          "🔥 Perder peso",
-          "💪 Ganar músculo",
-          "⚖️ Recomposición corporal",
-          "🏃 Mejorar condición física",
-        ];
-
-      case 4:
-        return [
-          "Principiante",
-          "Intermedio",
-          "Avanzado",
-        ];
-
-      case 5:
-        return [
-          "2-3 días",
-          "3-4 días",
-          "4-5 días",
-          "6+ días",
-        ];
-
-      case 6:
-        return [
-          "🏠 Casa",
-          "🏋️ Gimnasio",
-          "🔄 Híbrido",
-        ];
-
-      case 7:
-        return [
-          "30 minutos",
-          "45 minutos",
-          "60 minutos",
-          "90+ minutos",
-        ];
-
-      case 8:
-        return [
-          "Ninguna",
-          "Rodilla",
-          "Espalda",
-          "Hombro",
-          "Otra",
-        ];
-
-      default:
-        return [];
+      case 0: return ["Gimnasio", "En Casa", "Hibrido"];
+      case 2: return ["30 a 45 minutos", "1 hora", "Mas de 1 hora"];
+      case 3: return ["Principiante", "Intermedio", "Avanzado"];
+      case 4: return ["Perder peso", "Ganar musculo", "Mantener la forma"];
+      case 5: return ["Ninguna", "Hombros", "Espalda", "Rodillas", "Otra"];
+      default: return [];
     }
   }
 
+  TextInputType _obtenerTipoTeclado() {
+    if (paso == 1 || paso == 6 || paso == 7) {
+      return TextInputType.number;
+    }
+    return TextInputType.text;
+  }
+
+  List<TextInputFormatter>? _obtenerFiltrosTeclado() {
+    if (paso == 1 || paso == 6) {
+      return [FilteringTextInputFormatter.digitsOnly];
+    }
+    if (paso == 7) {
+      return [FilteringTextInputFormatter.allow(RegExp(r'^\d[\d.]*'))];
+    }
+    return null;
+  }
+
+  String _obtenerHintTexto() {
+    switch (paso) {
+      case 1: return "Ejemplo: 4";
+      case 6: return "Ejemplo: 175";
+      case 7: return "Ejemplo: 70.5";
+      default: return "Escribe aqui...";
+    }
+  }
+
+  // ── Guardar Datos Directamente en Firebase ─────────────────────────────────
+
   Future<void> guardarPerfil() async {
     try {
-      setState(() {
-        loading = true;
-      });
-
+      setState(() => loading = true);
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
@@ -307,157 +270,103 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         "apellido": apellido,
         "apodo": apodo,
         "correo": user.email,
+        "lugarEntrenamiento": lugarEntrenamiento,
+        "frecuencia": frecuencia,
+        "tiempoEntrenamiento": tiempoEntrenamiento,
+        "experiencia": experiencia,
+        "objetivo": objetivo,
+        "lesion": lesion,
         "altura": altura,
         "peso": peso,
-        "objetivo": objetivo,
-        "experiencia": experiencia,
-        "frecuencia": frecuencia,
-        "lugarEntrenamiento": lugarEntrenamiento,
-        "tiempoEntrenamiento": tiempoEntrenamiento,
-        "lesion": lesion,
+        "pesoInicial": peso,
         "fotoPerfil": fotoPerfil,
         "perfilCompleto": true,
         "creado": DateTime.now(),
       });
 
       if (!mounted) return;
-
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(e.toString()),
-        ),
+        SnackBar(backgroundColor: Colors.red, content: Text(e.toString())),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          loading = false;
-        });
-      }
+      if (mounted) setState(() => loading = false);
     }
   }
 
-  void guardarApodoManual() {
-    final texto = apodoManualController.text.trim();
+  // ── Componentes de Interfaz (Widgets) ──────────────────────────────────────
 
-    if (texto.isEmpty) return;
-
-    setState(() {
-      escribiendoApodo = false;
-    });
-
-    avanzar(texto);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final opciones = opcionesActuales();
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF071120),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _header(),
-
-            Expanded(
-              child: ListView.builder(
-                controller: scrollController,
-                padding: const EdgeInsets.all(18),
-                itemCount: mensajes.length,
-                itemBuilder: (context, index) {
-                  final mensaje = mensajes[index];
-
-                  if (mensaje["tipo"] == "usuario") {
-                    return _burbujaUsuario(mensaje["texto"]!);
-                  }
-
-                  return _burbujaEvo(mensaje["texto"]!);
-                },
-              ),
-            ),
-
-            if (paso <= 8) _opciones(opciones),
-
-            if (paso > 8) _botonFinal(),
-          ],
+  Widget _avatarEvo({double radius = 26}) {
+    final size = radius * 2;
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _avatarBg,
+        border: Border.all(color: _avatarBorder, width: 2),
+      ),
+      child: ClipOval(
+        child: Image.asset(
+          'assets/imagenes/avatar/chat.png',
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Icon(
+            Icons.smart_toy_rounded,
+            color: _cyanAccent,
+            size: size * 0.55,
+          ),
         ),
       ),
     );
   }
 
-  Widget _header() {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 14,
-      ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF0B1628),
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.white10,
-          ),
-        ),
-      ),
+  Widget _burbujaTyping() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 18, left: 4),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: Colors.white,
-            backgroundImage: const AssetImage(
-              "assets/imagenes/avatar/chat.png",
-            ),
-            onBackgroundImageError: (_, __) {},
-          ),
-
-          const SizedBox(width: 12),
-
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Evo",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Coach personal EvoYou AI",
-                  style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
+          _avatarEvo(radius: 20),
+          const SizedBox(width: 8),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 6,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.cyan.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              "${paso > 8 ? 100 : ((paso + 1) / 9 * 100).round()}%",
-              style: const TextStyle(
-                color: Colors.cyan,
-                fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: const BoxDecoration(
+              color: _bgBurbuja,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(18),
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
               ),
+            ),
+            child: AnimatedBuilder(
+              animation: _typingCtrl,
+              builder: (_, __) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (i) {
+                    final v = ((_typingCtrl.value * 3) - i).clamp(0.0, 1.0);
+                    final bounce = (v < 0.5 ? v : 1.0 - v) * 2;
+                    return Transform.translate(
+                      offset: Offset(0, -5 * bounce),
+                      child: Container(
+                        width: 7,
+                        height: 7,
+                        margin: const EdgeInsets.symmetric(horizontal: 2.5),
+                        decoration: BoxDecoration(
+                          color: _cyanAccent.withOpacity(0.55 + 0.45 * bounce),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              },
             ),
           ),
         ],
@@ -467,26 +376,17 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
   Widget _burbujaEvo(String texto) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.only(bottom: 18, left: 4),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.white,
-            backgroundImage: const AssetImage(
-              "assets/imagenes/avatar/chat.png",
-            ),
-            onBackgroundImageError: (_, __) {},
-          ),
-
-          const SizedBox(width: 10),
-
+          _avatarEvo(radius: 20),
+          const SizedBox(width: 8),
           Flexible(
             child: Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
               decoration: const BoxDecoration(
-                color: Color(0xFF111C30),
+                color: _bgBurbuja,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(4),
                   topRight: Radius.circular(18),
@@ -498,12 +398,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 texto,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
-                  height: 1.35,
+                  fontSize: 15.5,
+                  height: 1.45,
                 ),
               ),
             ),
           ),
+          const SizedBox(width: 40),
         ],
       ),
     );
@@ -511,16 +412,20 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
   Widget _burbujaUsuario(String texto) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.only(bottom: 18, right: 4),
       child: Align(
         alignment: Alignment.centerRight,
         child: Container(
-          padding: const EdgeInsets.all(15),
-          constraints: const BoxConstraints(
-            maxWidth: 280,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.72,
           ),
           decoration: const BoxDecoration(
-            color: Color(0xFF00CFFF),
+            gradient: LinearGradient(
+              colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(18),
               topRight: Radius.circular(4),
@@ -532,8 +437,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
             texto,
             style: const TextStyle(
               color: Color(0xFF04111F),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: 15.5,
+              fontWeight: FontWeight.w600,
+              height: 1.35,
             ),
           ),
         ),
@@ -541,56 +447,113 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     );
   }
 
-  Widget _opciones(List<String> opciones) {
-    if (escribiendoApodo) {
-      return _inputApodo();
-    }
+  Widget _header() {
+    final progreso = paso > 8 ? 1.0 : (paso + 1) / 9;
+    final porcentaje = (progreso * 100).round();
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(18, 12, 18, 18),
-      decoration: const BoxDecoration(
-        color: Color(0xFF071120),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+      decoration: BoxDecoration(
+        color: _bgSecundario,
         border: Border(
-          top: BorderSide(
-            color: Colors.white10,
-          ),
+          bottom: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1),
         ),
       ),
       child: Column(
+        children: [
+          Row(
+            children: [
+              _avatarEvo(radius: 26),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Evo",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    Text(
+                      "Asistente de Perfil",
+                      style: TextStyle(color: Colors.white54, fontSize: 12.5),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(
+                  color: _cyanAccent.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: _cyanAccent.withOpacity(0.3), width: 1),
+                ),
+                child: Text(
+                  "$porcentaje%",
+                  style: const TextStyle(
+                    color: _cyanAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: progreso,
+              backgroundColor: Colors.white10,
+              valueColor: const AlwaysStoppedAnimation<Color>(_cyanAccent),
+              minHeight: 4,
+            ),
+          ),
+          const SizedBox(height: 14),
+        ],
+      ),
+    );
+  }
+
+  // Panel inferior dinámico para preguntas de alternativas (A prueba de tontos)
+  Widget _selectorAlternativas(List<String> opciones) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: MediaQuery.of(context).padding.bottom + 14,
+      ),
+      decoration: BoxDecoration(
+        color: _bgSecundario,
+        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: opciones.map((opcion) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 8),
             child: SizedBox(
               width: double.infinity,
-              height: 54,
+              height: 48,
               child: ElevatedButton(
-                onPressed: () {
-                  if (opcion == "Prefiero escribirlo") {
-                    setState(() {
-                      escribiendoApodo = true;
-                    });
-                  } else {
-                    avanzar(opcion);
-                  }
-                },
+                onPressed: () => avanzarFlujo(opcion),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF111C30),
+                  backgroundColor: _bgBurbuja,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    side: const BorderSide(
-                      color: Colors.cyan,
-                      width: 1,
-                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: _cyanAccent.withOpacity(0.3), width: 1),
                   ),
                 ),
                 child: Text(
                   opcion,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -600,51 +563,67 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     );
   }
 
-  Widget _inputApodo() {
+  // Input de barra de chat tradicional para pasos numéricos
+  Widget _chatInputBar() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(18, 12, 18, 18),
-      decoration: const BoxDecoration(
-        color: Color(0xFF071120),
-        border: Border(
-          top: BorderSide(
-            color: Colors.white10,
-          ),
-        ),
+      padding: EdgeInsets.only(
+        left: 12,
+        right: 12,
+        top: 10,
+        bottom: MediaQuery.of(context).padding.bottom + 10,
+      ),
+      decoration: BoxDecoration(
+        color: _bgSecundario,
+        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
       ),
       child: Row(
         children: [
           Expanded(
             child: TextField(
-              controller: apodoManualController,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              key: ValueKey("paso_$paso"),
+              controller: chatInputController,
+              keyboardType: _obtenerTipoTeclado(),
+              inputFormatters: _obtenerFiltrosTeclado(),
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              textInputAction: TextInputAction.send,
+              onSubmitted: (_) {
+                final t = chatInputController.text.trim();
+                chatInputController.clear();
+                avanzarFlujo(t);
+              },
               decoration: InputDecoration(
-                hintText: "Escribe tu apodo",
-                hintStyle: const TextStyle(
-                  color: Colors.white54,
-                ),
+                hintText: _obtenerHintTexto(),
+                hintStyle: const TextStyle(color: Colors.white30, fontSize: 14.5),
                 filled: true,
-                fillColor: const Color(0xFF111C30),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide.none,
+                fillColor: Colors.white.withOpacity(0.06),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: _cyanAccent.withOpacity(0.5), width: 1),
                 ),
               ),
             ),
           ),
-
-          const SizedBox(width: 10),
-
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: Colors.cyan,
-            child: IconButton(
-              onPressed: guardarApodoManual,
-              icon: const Icon(
-                Icons.send,
-                color: Colors.white,
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              final t = chatInputController.text.trim();
+              chatInputController.clear();
+              avanzarFlujo(t);
+            },
+            child: Container(
+              width: 46,
+              height: 46,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
+              child: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
             ),
           ),
         ],
@@ -654,38 +633,79 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
   Widget _botonFinal() {
     return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: const BoxDecoration(
-        color: Color(0xFF071120),
-        border: Border(
-          top: BorderSide(
-            color: Colors.white10,
-          ),
-        ),
+      padding: EdgeInsets.only(
+        left: 18,
+        right: 18,
+        top: 14,
+        bottom: MediaQuery.of(context).padding.bottom + 14,
+      ),
+      decoration: BoxDecoration(
+        color: _bgSecundario,
+        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
       ),
       child: SizedBox(
         width: double.infinity,
-        height: 58,
+        height: 56,
         child: ElevatedButton(
           onPressed: loading ? null : guardarPerfil,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.cyan,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
+            backgroundColor: _cyanAccent,
+            foregroundColor: const Color(0xFF04111F),
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           ),
           child: loading
-              ? const CircularProgressIndicator(
-            color: Colors.white,
+              ? const SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(color: Color(0xFF04111F), strokeWidth: 2.5),
           )
               : const Text(
-            "Continuar con evaluación física",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            "Finalizar y Guardar Perfil",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 0.3),
           ),
+        ),
+      ),
+    );
+  }
+
+  // ── Build principal ────────────────────────────────────────────────────────
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _bgPrincipal,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            _header(),
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                padding: const EdgeInsets.fromLTRB(14, 16, 14, 8),
+                itemCount: mensajes.length + (_mostrarTyping ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (_mostrarTyping && index == mensajes.length) {
+                    return _burbujaTyping();
+                  }
+                  final msg = mensajes[index];
+                  if (msg["tipo"] == "usuario") {
+                    return _burbujaUsuario(msg["texto"]!);
+                  }
+                  return _burbujaEvo(msg["texto"]!);
+                },
+              ),
+            ),
+
+            // Control de acciones según el tipo de paso
+            if (paso <= 7 && !_mostrarTyping)
+              _esPasoDeAlternativas()
+                  ? _selectorAlternativas(_obtenerAlternativas())
+                  : _chatInputBar(),
+            if (paso > 7) _botonFinal(),
+          ],
         ),
       ),
     );

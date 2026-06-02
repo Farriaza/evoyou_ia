@@ -7,29 +7,60 @@ class ChatMessage {
   final String text;
   final bool esUsuario;
   final DateTime hora;
-  ChatMessage({required this.text, required this.esUsuario, required this.hora});
+  ChatMessage({
+    required this.text,
+    required this.esUsuario,
+    required this.hora,
+  });
 }
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
+
   @override
   State<ChatbotScreen> createState() => _ChatbotScreenState();
 }
 
-class _ChatbotScreenState extends State<ChatbotScreen> {
+class _ChatbotScreenState extends State<ChatbotScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final List<ChatMessage> _mensajes = [];
+  late AnimationController _typingAnimController;
 
   bool _enviando = false;
   String apodo = "Usuario";
   Map<String, List<String>> _diccionario = {};
 
+  // ── Paleta de colores consistente con el entorno ──────────────────────────
+  static const Color _bgPrincipal  = Color(0xFF071120);
+  static const Color _bgSecundario = Color(0xFF0D1A2D);
+  static const Color _bgBurbuja    = Color(0xFF0F2036);
+  static const Color _cyanAccent   = Color(0xFF00D4E8);
+  static const Color _cyanLight    = Color(0xFF00B8CC);
+  static const Color _avatarBg     = Color(0xFF0A1E35); // navy oscuro (sin morado)
+  static const Color _avatarBorder = Color(0xFF00D4E8); // borde cyan
+  // ──────────────────────────────────────────────────────────────────────────
+
   @override
   void initState() {
     super.initState();
+    _typingAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat();
     _inicializar();
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+    _typingAnimController.dispose();
+    super.dispose();
+  }
+
+  // ── Inicialización ────────────────────────────────────────────────────────
 
   Future<void> _inicializar() async {
     await Future.wait([_cargarApodo(), _cargarDiccionario()]);
@@ -53,9 +84,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   Future<void> _cargarDiccionario() async {
     try {
-      final snap = await FirebaseFirestore.instance
-          .collection("chat_dictionary")
-          .get();
+      final snap =
+      await FirebaseFirestore.instance.collection("chat_dictionary").get();
       for (final doc in snap.docs) {
         _diccionario[doc.id] =
         List<String>.from(doc.data()["keywords"] ?? []);
@@ -72,13 +102,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
+  // ── Lógica de mensajes ───────────────────────────────────────────────────
+
   void _agregar(String texto, bool esUsuario) {
     setState(() {
-      _mensajes.add(ChatMessage(
-        text: texto,
-        esUsuario: esUsuario,
-        hora: DateTime.now(),
-      ));
+      _mensajes.add(
+        ChatMessage(text: texto, esUsuario: esUsuario, hora: DateTime.now()),
+      );
     });
   }
 
@@ -98,37 +128,36 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         return "¡Hola de nuevo $apodo! 😊 ¿En qué puedo ayudarte hoy?";
 
       case "ayuda":
-        return "Estoy aquí para acompañarte en tu proceso. "
-            "Por ahora estamos trabajando en las funciones de la app. "
-            "Pronto tendrás acceso a rutinas, alimentación y seguimiento de progreso. "
+        return "Estoy aquí para acompañarte en tu proceso.\n\n"
+            "Pronto tendrás acceso a rutinas, alimentación y seguimiento de progreso.\n\n"
             "¿Hay algo más en lo que pueda orientarte?";
 
       case "entrenamiento":
-        return "La sección de rutinas y entrenamientos está en desarrollo. "
-            "Muy pronto podrás acceder a planes personalizados según tu nivel y objetivo. "
+        return "La sección de rutinas y entrenamientos está en desarrollo.\n\n"
+            "Muy pronto podrás acceder a planes personalizados según tu nivel y objetivo.\n\n"
             "¡Estamos trabajando duro para ti, $apodo! 💪";
 
       case "nutricion":
-        return "La sección de nutrición y alimentación está próximamente disponible. "
-            "Podrás ver planes de comida adaptados a tus metas. "
+        return "La sección de nutrición y alimentación está próximamente disponible.\n\n"
+            "Podrás ver planes de comida adaptados a tus metas.\n\n"
             "¡Pronto, $apodo! 🥗";
 
       case "running":
-        return "Los planes de running y cardio estarán disponibles muy pronto. "
+        return "Los planes de running y cardio estarán disponibles muy pronto.\n\n"
             "¡Sigue pendiente, $apodo! 🏃";
 
       case "progreso":
-        return "El seguimiento de tu progreso estará disponible próximamente. "
-            "Podrás registrar peso, medidas y ver tu evolución. "
+        return "El seguimiento de tu progreso estará disponible próximamente.\n\n"
+            "Podrás registrar peso, medidas y ver tu evolución.\n\n"
             "¡Lo estamos preparando para ti! 📊";
 
       case "objetivo":
-        return "Me alegra que tengas clara tu meta. "
-            "Muy pronto tendrás herramientas dentro de la app para trabajar en ella. "
+        return "Me alegra que tengas clara tu meta.\n\n"
+            "Muy pronto tendrás herramientas dentro de la app para trabajar en ella.\n\n"
             "¿Hay algo más en lo que pueda ayudarte hoy?";
 
       default:
-        return "Entiendo, $apodo. Estamos trabajando para ofrecerte la mejor experiencia. "
+        return "Entiendo, $apodo. Estamos trabajando para ofrecerte la mejor experiencia.\n\n"
             "¿Hay algo más en lo que pueda orientarte?";
     }
   }
@@ -142,7 +171,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     setState(() => _enviando = true);
     _scrollAbajo();
 
-    await Future.delayed(const Duration(milliseconds: 700));
+    await Future.delayed(const Duration(milliseconds: 900));
 
     final categoria = _detectarCategoria(texto) ?? "default";
     _agregar(_responder(categoria), false);
@@ -156,150 +185,92 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 320),
           curve: Curves.easeOut,
         );
       }
     });
   }
 
+  // ── Helpers de UI ─────────────────────────────────────────────────────────
+
   String _horaTexto(DateTime h) =>
       "${h.hour.toString().padLeft(2, '0')}:${h.minute.toString().padLeft(2, '0')}";
 
-  Widget _burbuja(ChatMessage msg) {
-    final esUsuario = msg.esUsuario;
-    return Align(
-      alignment: esUsuario ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-        constraints:
-        BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        child: Column(
-          crossAxisAlignment:
-          esUsuario ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              decoration: BoxDecoration(
-                color: esUsuario ? Colors.cyan : const Color(0xFF0D1A2D),
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(18),
-                  topRight: const Radius.circular(18),
-                  bottomLeft: Radius.circular(esUsuario ? 18 : 4),
-                  bottomRight: Radius.circular(esUsuario ? 4 : 18),
-                ),
-              ),
-              child: Text(
-                msg.text,
-                style: const TextStyle(color: Colors.white, height: 1.4),
-              ),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              _horaTexto(msg.hora),
-              style: const TextStyle(color: Colors.white38, fontSize: 10),
-            ),
-          ],
+  // Avatar circular con paleta navy + borde cyan (sin morado)
+  Widget _avatarEvoYou({double size = 40}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _avatarBg,
+        border: Border.all(color: _avatarBorder, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: _cyanAccent.withOpacity(0.25),
+            blurRadius: 8,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: ClipOval(
+        child: Image.asset(
+          'assets/imagenes/avatar/chat.png',
+          fit: BoxFit.cover,
+          // Si la imagen falla, muestra ícono genérico acorde a la paleta
+          errorBuilder: (_, __, ___) => Icon(
+            Icons.smart_toy_rounded,
+            color: _cyanAccent,
+            size: size * 0.55,
+          ),
         ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF071120),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0D1A2D),
-        title: Row(
-          children: [
-            const CircleAvatar(
-              backgroundImage:
-              AssetImage('assets/imagenes/avatar/chat.png'),
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("EvoYou",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
-                    ),
-                    const SizedBox(width: 4),
-                    const Text("En línea",
-                        style: TextStyle(fontSize: 11)),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      body: Column(
+  // Indicador de "escribiendo…" con 3 puntos animados
+  Widget _indicadorEscribiendo() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, bottom: 8),
+      child: Row(
         children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              itemCount: _mensajes.length,
-              itemBuilder: (_, i) => _burbuja(_mensajes[i]),
-            ),
-          ),
-          if (_enviando)
-            const Padding(
-              padding: EdgeInsets.only(left: 16, bottom: 4),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "EvoYou está escribiendo...",
-                  style: TextStyle(color: Colors.white38, fontSize: 12),
-                ),
+          _avatarEvoYou(size: 28),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: _bgBurbuja,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(18),
+                topRight: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+                bottomLeft: Radius.circular(4),
               ),
             ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            color: const Color(0xFF0D1A2D),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    style: const TextStyle(color: Colors.white),
-                    maxLines: null,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: (_) => _enviarMensaje(),
-                    decoration: InputDecoration(
-                      hintText: "Escribe tu mensaje...",
-                      hintStyle:
-                      const TextStyle(color: Colors.white38),
-                      filled: true,
-                      fillColor: Colors.white10,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide.none,
+            child: AnimatedBuilder(
+              animation: _typingAnimController,
+              builder: (_, __) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (i) {
+                    final offset = ((_typingAnimController.value * 3) - i).clamp(0.0, 1.0);
+                    final bounce = (offset < 0.5 ? offset : 1.0 - offset) * 2;
+                    return Transform.translate(
+                      offset: Offset(0, -4 * bounce),
+                      child: Container(
+                        width: 7,
+                        height: 7,
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        decoration: BoxDecoration(
+                          color: _cyanAccent.withOpacity(0.6 + 0.4 * bounce),
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundColor: Colors.cyan,
-                  child: IconButton(
-                    onPressed: _enviarMensaje,
-                    icon: const Icon(Icons.send,
-                        color: Colors.white, size: 18),
-                  ),
-                ),
-              ],
+                    );
+                  }),
+                );
+              },
             ),
           ),
         ],
@@ -307,10 +278,267 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
+  // Burbuja de mensaje
+  Widget _burbuja(ChatMessage msg) {
+    final esUsuario = msg.esUsuario;
+    return Align(
+      alignment: esUsuario ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.78,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Avatar EvoYou al lado izquierdo de su burbuja
+            if (!esUsuario) ...[
+              _avatarEvoYou(size: 28),
+              const SizedBox(width: 6),
+            ],
+            Flexible(
+              child: Column(
+                crossAxisAlignment: esUsuario
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      gradient: esUsuario
+                          ? const LinearGradient(
+                        colors: [Color(0xFF00B8CC), Color(0xFF0090A8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                          : null,
+                      color: esUsuario ? null : _bgBurbuja,
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(18),
+                        topRight: const Radius.circular(18),
+                        bottomLeft: Radius.circular(esUsuario ? 18 : 4),
+                        bottomRight: Radius.circular(esUsuario ? 4 : 18),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: esUsuario
+                              ? _cyanAccent.withOpacity(0.15)
+                              : Colors.black.withOpacity(0.2),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      msg.text,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        height: 1.45,
+                        fontSize: 14.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      _horaTexto(msg.hora),
+                      style: const TextStyle(
+                        color: Colors.white30,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Espaciado derecho si es EvoYou (para simetría)
+            if (!esUsuario) const SizedBox(width: 2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Campo de texto + botón enviar
+  Widget _inputBar() {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 12,
+        right: 12,
+        top: 10,
+        // Respeta la barra de navegación del sistema Android
+        bottom: MediaQuery.of(context).padding.bottom + 10,
+      ),
+      decoration: BoxDecoration(
+        color: _bgSecundario,
+        border: Border(
+          top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              style: const TextStyle(color: Colors.white, fontSize: 14.5),
+              maxLines: null,
+              textInputAction: TextInputAction.send,
+              onSubmitted: (_) => _enviarMensaje(),
+              decoration: InputDecoration(
+                hintText: "Escribe tu mensaje...",
+                hintStyle: const TextStyle(color: Colors.white30, fontSize: 14),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.06),
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 18, vertical: 11),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(26),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(26),
+                  borderSide:
+                  BorderSide(color: _cyanAccent.withOpacity(0.5), width: 1),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Botón enviar con gradiente cyan
+          GestureDetector(
+            onTap: _enviarMensaje,
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: _cyanAccent.withOpacity(0.35),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Build ─────────────────────────────────────────────────────────────────
+
   @override
-  void dispose() {
-    _controller.dispose();
-    _scrollController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _bgPrincipal,
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        backgroundColor: _bgSecundario,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        // Línea inferior sutil cyan
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: _cyanAccent.withOpacity(0.18),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: Colors.white70, size: 18),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Row(
+          children: [
+            _avatarEvoYou(size: 42),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "EvoYou",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: Colors.white,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF00E676),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Text(
+                      "En línea",
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.white54,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert_rounded,
+                color: Colors.white54, size: 22),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      // SafeArea garantiza que el contenido no quede debajo de la barra del sistema
+      body: SafeArea(
+        bottom: false, // el _inputBar maneja el padding inferior manualmente
+        child: Column(
+          children: [
+            // Lista de mensajes
+            Expanded(
+              child: _mensajes.isEmpty
+                  ? const Center(
+                child: CircularProgressIndicator(
+                  color: _cyanAccent,
+                  strokeWidth: 2,
+                ),
+              )
+                  : ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                itemCount: _mensajes.length,
+                itemBuilder: (_, i) => _burbuja(_mensajes[i]),
+              ),
+            ),
+
+            // Indicador "escribiendo..."
+            if (_enviando) _indicadorEscribiendo(),
+
+            // Barra de input
+            _inputBar(),
+          ],
+        ),
+      ),
+    );
   }
 }

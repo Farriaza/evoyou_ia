@@ -304,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 2),
                         const Text(
-                          "Tu evolución comienza hoy",
+                          "Listo para avanzar hoy",
                           style: TextStyle(
                             color: Colors.white38,
                             fontSize: 12,

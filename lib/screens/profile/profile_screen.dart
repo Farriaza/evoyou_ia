@@ -1,3 +1,4 @@
+// lib/screens/profile_screen.dart
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -48,10 +49,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (actualizado == true) await cargar();
   }
 
+  // Tarjeta de estadísticas físicas expandible a la mitad de la pantalla
   Widget _statCard(String titulo, String valor, IconData icono) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -66,22 +68,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: Column(
           children: [
-            Icon(icono, color: Colors.cyan, size: 18),
-            const SizedBox(height: 6),
+            Icon(icono, color: Colors.cyan, size: 20),
+            const SizedBox(height: 8),
             Text(
               valor,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               titulo,
               style: const TextStyle(
                 color: Colors.white54,
                 fontSize: 12,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -90,10 +94,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Fila de información alineada de forma elegante
   Widget _infoRow(String titulo, String valor, IconData icono) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.04),
         borderRadius: BorderRadius.circular(14),
@@ -133,6 +138,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final fotoPath = data?["fotoPerfil"]?.toString() ?? "";
     final tieneFoto = fotoPath.isNotEmpty && File(fotoPath).existsSync();
 
+    // Lógica para formatear la frecuencia agregando la palabra "días" si no la tiene
+    String rawFrecuencia = data?["frecuencia"]?.toString() ?? "3-4";
+    String frecuenciaFormateada = rawFrecuencia.contains("días")
+        ? rawFrecuencia
+        : "$rawFrecuencia días";
+
     return Scaffold(
       backgroundColor: const Color(0xFF050B18),
       appBar: AppBar(
@@ -161,9 +172,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Foto de perfil
             Container(
               padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [Colors.cyan, Colors.blue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -184,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 12),
 
-            // Nombre y apodo
+            // Apodo principal
             Text(
               data?["apodo"] ?? "Sin apodo",
               style: const TextStyle(
@@ -195,6 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 2),
+            // Nombre y Apellido secundario
             Text(
               "${data?["nombre"] ?? ""} ${data?["apellido"] ?? ""}".trim(),
               style: const TextStyle(color: Colors.white60, fontSize: 14),
@@ -205,48 +217,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: const TextStyle(color: Colors.white30, fontSize: 12),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // Stats: Peso y Altura
+            // Métricas Físicas fijas de 2 columnas (Alineación Limpia)
             Row(
               children: [
                 _statCard(
-                  "Peso",
+                  "Peso Corporal",
                   "${data?["peso"] ?? "0"} KG",
                   Icons.monitor_weight_outlined,
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 _statCard(
-                  "Altura",
+                  "Estatura / Altura",
                   "${data?["altura"] ?? "0"} CM",
                   Icons.height,
-                ),
-                const SizedBox(width: 10),
-                _statCard(
-                  "Objetivo",
-                  data?["objetivo"] ?? "—",
-                  Icons.flag_outlined,
                 ),
               ],
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            // Info rows
+            // Filas de Información del Plan de Entrenamiento
+            _infoRow(
+              "Objetivo",
+              data?["objetivo"] ?? "Perder peso",
+              Icons.flag_outlined,
+            ),
             _infoRow(
               "Experiencia",
               data?["experiencia"] ?? "Principiante",
               Icons.fitness_center,
             ),
             _infoRow(
-              "Frecuencia",
-              data?["frecuencia"] ?? "1-2 días",
+              "Frecuencia semanal",
+              frecuenciaFormateada,
               Icons.calendar_today_outlined,
             ),
+            _infoRow(
+              "Zona de entrenamiento",
+              data?["lugarEntrenamiento"] ?? "Gimnasio",
+              Icons.business_center_outlined,
+            ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // Botón editar
+            // Botón de acción inferior de contorno cian
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -271,7 +287,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),

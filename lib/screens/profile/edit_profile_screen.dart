@@ -1,3 +1,4 @@
+// lib/screens/edit_profile_screen.dart
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,8 +24,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   String objetivo = "Perder peso";
   String experiencia = "Principiante";
-  String frecuencia = "1-2 días";
-  String fotoActual = ""; // ← guarda el path actual de Firestore
+  String frecuencia = "3-4 días";
+  String lugarEntrenamiento = "Gimnasio";
+  String fotoActual = "";
   File? imagen;
   bool imagenModificada = false;
   bool loading = true;
@@ -50,11 +52,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         apodoController.text = data["apodo"] ?? "";
         pesoController.text = data["peso"]?.toString() ?? "";
         alturaController.text = data["altura"]?.toString() ?? "";
-        objetivo = data["objetivo"] ?? "Perder peso";
-        experiencia = data["experiencia"] ?? "Principiante";
-        frecuencia = data["frecuencia"] ?? "1-2 días";
 
-        // Guardar el path actual para no perderlo si no se cambia la foto
+        String objDb = data["objetivo"] ?? "Perder peso";
+        if (objDb == "Ganar musculo" || objDb == "Ganar masa muscular") {
+          objetivo = "Ganar musculo";
+        } else if (objDb == "Mantener la forma" || objDb == "Mantener físico") {
+          objetivo = "Mantener la forma";
+        } else {
+          objetivo = "Perder peso";
+        }
+
+        experiencia = data["experiencia"] ?? "Principiante";
+        frecuencia = data["frecuencia"] ?? "3-4 días";
+        lugarEntrenamiento = data["lugarEntrenamiento"] ?? "Gimnasio";
         fotoActual = data["fotoPerfil"] ?? "";
 
         if (fotoActual.isNotEmpty) {
@@ -82,7 +92,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (!mounted) return;
       setState(() {
         imagen = File(picked.path);
-        imagenModificada = true; // ← marcar que el usuario eligió nueva foto
+        imagenModificada = true;
       });
     } catch (e) {
       print(e);
@@ -92,8 +102,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> guardarPerfil() async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-
-      // FIX: solo guardar nueva foto si fue modificada, si no conservar fotoActual
       String fotoPath = fotoActual;
 
       if (imagenModificada && imagen != null) {
@@ -112,7 +120,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         "objetivo": objetivo,
         "experiencia": experiencia,
         "frecuencia": frecuencia,
-        "fotoPerfil": fotoPath, // ← ahora nunca se borra si no hubo cambio
+        "lugarEntrenamiento": lugarEntrenamiento,
+        "fotoPerfil": fotoPath,
       });
 
       if (!mounted) return;
@@ -123,12 +132,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  // Campo de texto compacto con ícono
   Widget _campo({
     required String hint,
     required TextEditingController controller,
     required IconData icono,
     TextInputType teclado = TextInputType.text,
+    String? sufijo, // Permite añadir KG o CM de forma elegante
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -140,10 +149,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
           prefixIcon: Icon(icono, color: Colors.cyan, size: 18),
+          suffixText: sufijo,
+          suffixStyle: const TextStyle(color: Colors.cyan, fontSize: 14, fontWeight: FontWeight.bold),
           filled: true,
           fillColor: Colors.white.withOpacity(0.04),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
@@ -161,7 +171,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  // Dropdown compacto con ícono
   Widget _dropdown<T>({
     required String hint,
     required T value,
@@ -183,8 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           prefixIcon: Icon(icono, color: Colors.cyan, size: 18),
           filled: true,
           fillColor: Colors.white.withOpacity(0.04),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
@@ -223,8 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new,
-              color: Colors.white, size: 18),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -241,9 +248,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(3),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           colors: [Colors.cyan, Colors.blue],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -252,11 +259,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: CircleAvatar(
                         radius: 48,
                         backgroundColor: Colors.white12,
-                        backgroundImage:
-                        imagen != null ? FileImage(imagen!) : null,
+                        backgroundImage: imagen != null ? FileImage(imagen!) : null,
                         child: imagen == null
-                            ? const Icon(Icons.person,
-                            size: 44, color: Colors.white)
+                            ? const Icon(Icons.person, size: 44, color: Colors.white)
                             : null,
                       ),
                     ),
@@ -269,8 +274,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           color: Colors.cyan,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.camera_alt,
-                            color: Colors.white, size: 14),
+                        child: const Icon(Icons.camera_alt, color: Colors.white, size: 14),
                       ),
                     ),
                   ],
@@ -318,19 +322,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 Expanded(
                   child: _campo(
-                    hint: "Peso (KG)",
+                    hint: "Ejemplo: 74.5",
                     controller: pesoController,
                     icono: Icons.monitor_weight_outlined,
-                    teclado: TextInputType.number,
+                    teclado: const TextInputType.numberWithOptions(decimal: true),
+                    sufijo: "KG", // Indicación clara de Kilogramos
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: _campo(
-                    hint: "Altura (CM)",
+                    hint: "Ejemplo: 175",
                     controller: alturaController,
                     icono: Icons.height,
                     teclado: TextInputType.number,
+                    sufijo: "CM", // Indicación clara de Centímetros
                   ),
                 ),
               ],
@@ -345,13 +351,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               value: objetivo,
               icono: Icons.flag_outlined,
               items: const [
-                DropdownMenuItem(
-                    value: "Ganar masa muscular", child: Text("Ganar músculo")),
-                DropdownMenuItem(value: "Definir", child: Text("Definir")),
-                DropdownMenuItem(
-                    value: "Perder peso", child: Text("Perder peso")),
+                DropdownMenuItem(value: "Perder peso", child: Text("Perder peso")),
+                DropdownMenuItem(value: "Ganar musculo", child: Text("Ganar musculo")),
+                DropdownMenuItem(value: "Mantener la forma", child: Text("Mantener la forma")),
               ],
               onChanged: (v) => setState(() => objetivo = v!),
+            ),
+
+            _dropdown<String>(
+              hint: "Lugar de entrenamiento",
+              value: lugarEntrenamiento,
+              icono: Icons.business_center_outlined,
+              items: const [
+                DropdownMenuItem(value: "Gimnasio", child: Text("Gimnasio")),
+                DropdownMenuItem(value: "En Casa", child: Text("En Casa")),
+                DropdownMenuItem(value: "Hibrido", child: Text("Hibrido")),
+              ],
+              onChanged: (v) => setState(() => lugarEntrenamiento = v!),
             ),
 
             _dropdown<String>(
@@ -359,25 +375,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               value: experiencia,
               icono: Icons.military_tech_outlined,
               items: const [
-                DropdownMenuItem(
-                    value: "Principiante", child: Text("Principiante")),
-                DropdownMenuItem(
-                    value: "Intermedio", child: Text("Intermedio")),
+                DropdownMenuItem(value: "Principiante", child: Text("Principiante")),
+                DropdownMenuItem(value: "Intermedio", child: Text("Intermedio")),
                 DropdownMenuItem(value: "Avanzado", child: Text("Avanzado")),
               ],
-              onChanged: (v) => setState(() => experiencia = v.toString()),
-            ),
-
-            _dropdown<String>(
-              hint: "Frecuencia semanal",
-              value: frecuencia,
-              icono: Icons.calendar_today_outlined,
-              items: const [
-                DropdownMenuItem(value: "1-2 días", child: Text("1-2 días")),
-                DropdownMenuItem(value: "3-4 días", child: Text("3-4 días")),
-                DropdownMenuItem(value: "5-6 días", child: Text("5-6 días")),
-              ],
-              onChanged: (v) => setState(() => frecuencia = v.toString()),
+              onChanged: (v) => setState(() => experiencia = v!),
             ),
 
             const SizedBox(height: 20),
@@ -389,25 +391,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.cyan,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   elevation: 0,
                 ),
                 onPressed: guardarPerfil,
-                icon: const Icon(Icons.save_outlined,
-                    color: Colors.white, size: 18),
+                icon: const Icon(Icons.save_outlined, color: Colors.white, size: 18),
                 label: const Text(
                   "Guardar Cambios",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),

@@ -12,15 +12,15 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController nombreController = TextEditingController();
-  final TextEditingController apellidoController = TextEditingController();
-  final TextEditingController apodoController = TextEditingController();
-  final TextEditingController correoController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nombreController    = TextEditingController();
+  final TextEditingController apellidoController  = TextEditingController();
+  final TextEditingController apodoController     = TextEditingController();
+  final TextEditingController correoController    = TextEditingController();
+  final TextEditingController passwordController  = TextEditingController();
 
-  bool loading = false;
+  bool loading         = false;
   bool ocultarPassword = true;
-  bool aceptoTerminos = false;
+  bool aceptoTerminos  = false;
 
   Future<void> register() async {
     if (!aceptoTerminos) {
@@ -36,8 +36,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       setState(() => loading = true);
 
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: correoController.text.trim(),
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email:    correoController.text.trim(),
         password: passwordController.text.trim(),
       );
 
@@ -45,20 +46,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .collection("usuarios")
           .doc(credential.user!.uid)
           .set({
-        "nombre": nombreController.text.trim(),
+        "nombre":   nombreController.text.trim(),
         "apellido": apellidoController.text.trim(),
-        "correo": correoController.text.trim(),
+        "correo":   correoController.text.trim(),
         "fotoPerfil": "",
-        "peso": "",
-        "altura": "",
+        "peso":     "",
+        "altura":   "",
         "objetivo": "",
         "experiencia": "",
-        "frecuencia": "",
+        "frecuencia":  "",
         "apodo": apodoController.text.trim().isEmpty
             ? nombreController.text.trim()
             : apodoController.text.trim(),
-        "perfilCompleto": false,
-        "termsAccepted": true,
+        "perfilCompleto":    false,
+        "termsAccepted":     true,
         "termsAcceptedDate": Timestamp.now(),
       });
 
@@ -91,34 +92,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xFF162033),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(title, style: const TextStyle(color: Colors.white)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)),
+        title:   Text(title,   style: const TextStyle(color: Colors.white)),
         content: Text(message, style: const TextStyle(color: Colors.white70)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Aceptar", style: TextStyle(color: Colors.cyan)),
+            child: const Text("Aceptar",
+                style: TextStyle(color: Colors.cyan)),
           ),
         ],
       ),
     );
   }
 
-  InputDecoration _fieldDecoration(String label, IconData icon, {Widget? suffix}) {
+  InputDecoration _fieldDecoration(String label, IconData icon,
+      {Widget? suffix}) {
     return InputDecoration(
-      labelText: label,
+      labelText:  label,
       labelStyle: const TextStyle(color: Colors.white54),
       prefixIcon: Icon(icon, color: Colors.cyan, size: 20),
       suffixIcon: suffix,
-      filled: true,
-      fillColor: const Color(0xFF0D1B2A),
+      filled:     true,
+      fillColor:  const Color(0xFF0D1B2A),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: Colors.white12),
+        borderSide: const BorderSide(color: Colors.white12),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: Colors.white12),
+        borderSide: const BorderSide(color: Colors.white12),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -135,124 +139,163 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ── Header con avatar ──────────────────────────────────────
-              SizedBox(
-                height: 260,
-                child: Stack(
-                  clipBehavior: Clip.none,
+
+              // ── HEADER ─────────────────────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Logo EvoYou.AI
-                    Positioned(
-                      top: 16,
-                      left: 24,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.chevron_left,
-                              color: Colors.cyan, size: 28),
-                          const SizedBox(width: 4),
-                          RichText(
-                            text: const TextSpan(
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold),
-                              children: [
-                                TextSpan(
-                                    text: "EvoYou.",
-                                    style: TextStyle(color: Colors.white)),
-                                TextSpan(
-                                    text: "AI",
-                                    style: TextStyle(color: Colors.cyan)),
+
+                    // Logo / back
+                    Row(
+                      children: [
+                        const Icon(Icons.chevron_left,
+                            color: Colors.cyan, size: 28),
+                        const SizedBox(width: 4),
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                  text: "EvoYou.",
+                                  style: TextStyle(color: Colors.white)),
+                              TextSpan(
+                                  text: "AI",
+                                  style: TextStyle(color: Colors.cyan)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Avatar izquierda + burbuja derecha
+                    // El avatar "se apoya" en la burbuja de saludo
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+
+                        // ── Avatar a la izquierda, apoyado en la burbuja ──
+                        SizedBox(
+                          width: 130,
+                          height: 210,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              // Imagen del avatar alineada al fondo
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                child: Image.asset(
+                                  'assets/imagenes/avatar/register_avatar.png',
+                                  height: 210,
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.bottomLeft,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    width: 110,
+                                    height: 210,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF0A1E35),
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(
+                                          color: Colors.cyan.withOpacity(0.3)),
+                                    ),
+                                    child: const Icon(Icons.person,
+                                        color: Colors.cyan, size: 60),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(width: 10),
+
+                        // ── Burbuja de saludo a la derecha ────────────────
+                        Expanded(
+                          child: Container(
+                            // Alineada al fondo para que el avatar "apoye" en ella
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF0D1B2A),
+                              borderRadius: const BorderRadius.only(
+                                topLeft:    Radius.circular(18),
+                                topRight:   Radius.circular(18),
+                                bottomRight: Radius.circular(18),
+                                // Esquina inferior izquierda en punta
+                                // apuntando al avatar
+                                bottomLeft: Radius.circular(4),
+                              ),
+                              border: Border.all(
+                                  color: Colors.cyan.withOpacity(0.4)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Text(
+                                  "¡Hola! 👋",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Soy ",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: "Evo.",
+                                        style: TextStyle(
+                                            color: Colors.cyan,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Primero vamos a crear tu cuenta para comenzar juntos tu transformación.",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 13),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-
-                    // Burbuja de bienvenida
-                    Positioned(
-                      top: 60,
-                      left: 24,
-                      child: Container(
-                        width: 200,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0D1B2A),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(18),
-                            topRight: Radius.circular(18),
-                            bottomRight: Radius.circular(18),
-                          ),
-                          border: Border.all(color: Colors.cyan.withOpacity(0.4)),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "¡Hola! 👋",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Soy ",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: "Evo.",
-                                    style: TextStyle(
-                                        color: Colors.cyan,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "Primero vamos a crear tu cuenta para comenzar juntos tu transformación.",
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 13),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // Avatar flotante a la derecha
-                    Positioned(
-                      right: 0,
-                      bottom: -20,
-                      child: SizedBox(
-                        height: 240,
-                        child: Image.asset(
-                          'assets/imagenes/avatar/register_avatar.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
               ),
+              // ── FIN HEADER ─────────────────────────────────────────────
 
-              // ── Formulario ─────────────────────────────────────────────
+              // ── FORMULARIO ─────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
                 child: Column(
                   children: [
+
                     // Nombre
                     TextField(
                       controller: nombreController,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration("Nombre", Icons.person_outline),
+                      decoration:
+                      _fieldDecoration("Nombre", Icons.person_outline),
                     ),
                     const SizedBox(height: 14),
 
@@ -260,7 +303,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextField(
                       controller: apellidoController,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration("Apellido", Icons.badge_outlined),
+                      decoration:
+                      _fieldDecoration("Apellido", Icons.badge_outlined),
                     ),
                     const SizedBox(height: 14),
 
@@ -268,7 +312,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextField(
                       controller: apodoController,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration("Apodo", Icons.label_outline),
+                      decoration:
+                      _fieldDecoration("Apodo", Icons.label_outline),
                     ),
                     const SizedBox(height: 14),
 
@@ -291,8 +336,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         "Contraseña",
                         Icons.lock_outline,
                         suffix: IconButton(
-                          onPressed: () =>
-                              setState(() => ocultarPassword = !ocultarPassword),
+                          onPressed: () => setState(
+                                  () => ocultarPassword = !ocultarPassword),
                           icon: Icon(
                             ocultarPassword
                                 ? Icons.visibility_off_outlined
@@ -332,13 +377,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          const Text("Acepto los ", style: TextStyle(color: Colors.white70)),
+                          const Text("Acepto los ",
+                              style: TextStyle(color: Colors.white70)),
                           const Text(
                             "términos y condiciones",
                             style: TextStyle(
-                                color: Colors.cyan,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.cyan),
+                              color: Colors.cyan,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.cyan,
+                            ),
                           ),
                         ],
                       ),
@@ -358,7 +405,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         onPressed: loading ? null : register,
                         child: loading
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                            color: Colors.white)
                             : const Text(
                           "Continuar",
                           style: TextStyle(
