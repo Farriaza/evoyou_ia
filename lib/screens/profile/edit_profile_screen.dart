@@ -24,9 +24,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String objetivo = "Perder peso";
   String experiencia = "Principiante";
   String frecuencia = "1-2 días";
-  String fotoActual = "";
-  bool imagenModificada = false;
+  String fotoActual = ""; // ← guarda el path actual de Firestore
   File? imagen;
+  bool imagenModificada = false;
   bool loading = true;
 
   @override
@@ -54,8 +54,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         experiencia = data["experiencia"] ?? "Principiante";
         frecuencia = data["frecuencia"] ?? "1-2 días";
 
-        if (data["fotoPerfil"] != null) {
-          final file = File(data["fotoPerfil"]);
+        // Guardar el path actual para no perderlo si no se cambia la foto
+        fotoActual = data["fotoPerfil"] ?? "";
+
+        if (fotoActual.isNotEmpty) {
+          final file = File(fotoActual);
           if (await file.exists()) imagen = file;
         }
       }
@@ -77,7 +80,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
       if (picked == null) return;
       if (!mounted) return;
-      setState(() => imagen = File(picked.path));
+      setState(() {
+        imagen = File(picked.path);
+        imagenModificada = true; // ← marcar que el usuario eligió nueva foto
+      });
     } catch (e) {
       print(e);
     }
@@ -86,9 +92,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> guardarPerfil() async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      String fotoPath = "";
 
-      if (imagen != null) {
+      // FIX: solo guardar nueva foto si fue modificada, si no conservar fotoActual
+      String fotoPath = fotoActual;
+
+      if (imagenModificada && imagen != null) {
         fotoPath = await LocalImageService.guardarImagen(imagen!, uid);
       }
 
@@ -104,7 +112,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         "objetivo": objetivo,
         "experiencia": experiencia,
         "frecuencia": frecuencia,
-        "fotoPerfil": fotoPath,
+        "fotoPerfil": fotoPath, // ← ahora nunca se borra si no hubo cambio
       });
 
       if (!mounted) return;

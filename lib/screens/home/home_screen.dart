@@ -12,6 +12,7 @@ import '../exercise/exercise_screen.dart';
 import '../running/running_screen.dart';
 import '../nutrition/nutrition_screen.dart';
 import '../rutina/rutina_screen.dart';
+import '../chatbot/chatbot_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,6 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(builder: (_) => const ProfileScreen()),
     ).then((_) async => await cargarUsuario());
+  }
+
+  void _irAChatbot() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ChatbotScreen()),
+    );
   }
 
   Widget _menuCard({
@@ -193,8 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SnackBar(content: Text("Módulo progreso próximamente")),
               );
             }
-            if (index == 1) _irAPerfil();
-            if (index == 2) {
+            if (index == 1) _irAChatbot();
+            if (index == 2) _irAPerfil();
+            if (index == 3) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
@@ -206,6 +215,11 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.insights_outlined),
               activeIcon: Icon(Icons.insights),
               label: "Progreso",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline_rounded),
+              activeIcon: Icon(Icons.chat_bubble_rounded),
+              label: "Chat IA",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
@@ -382,11 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       titulo: "Coach IA",
                       icono: Icons.psychology,
                       color: Colors.purpleAccent,
-                      badge: "Próximamente",
-                      onTap: () => ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(
-                          content:
-                          Text("Coach IA próximamente"))),
+                      onTap: _irAChatbot,
                     ),
                     _menuCard(
                       titulo: "Look",
