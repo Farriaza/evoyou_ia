@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -144,27 +145,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: TextField(
         controller: controller,
         keyboardType: teclado,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
-          prefixIcon: Icon(icono, color: Colors.cyan, size: 18),
+          hintStyle: const TextStyle(color: AppColors.textSubtle60, fontSize: 14),
+          prefixIcon: Icon(icono, color: AppColors.accent, size: 18),
           suffixText: sufijo,
-          suffixStyle: const TextStyle(color: Colors.cyan, fontSize: 14, fontWeight: FontWeight.bold),
+          suffixStyle: const TextStyle(color: AppColors.accent, fontSize: 14, fontWeight: FontWeight.bold),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.04),
+          fillColor: const Color(0x0AF6FAFD),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+            borderSide: BorderSide(color: const Color(0x0FF6FAFD)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+            borderSide: BorderSide(color: const Color(0x0FF6FAFD)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Colors.cyan, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
           ),
         ),
       ),
@@ -183,27 +184,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: DropdownButtonFormField<T>(
         value: value,
         isExpanded: true,
-        dropdownColor: const Color(0xFF111827),
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-        icon: const Icon(Icons.keyboard_arrow_down, color: Colors.cyan),
+        dropdownColor: AppColors.bgBubble,
+        style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+        icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.accent),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
-          prefixIcon: Icon(icono, color: Colors.cyan, size: 18),
+          hintStyle: const TextStyle(color: AppColors.textSubtle60, fontSize: 14),
+          prefixIcon: Icon(icono, color: AppColors.accent, size: 18),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.04),
+          fillColor: const Color(0x0AF6FAFD),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+            borderSide: BorderSide(color: const Color(0x0FF6FAFD)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+            borderSide: BorderSide(color: const Color(0x0FF6FAFD)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Colors.cyan, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
           ),
         ),
         items: items,
@@ -216,22 +217,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     if (loading) {
       return const Scaffold(
-        backgroundColor: Color(0xFF050B18),
-        body: Center(child: CircularProgressIndicator(color: Colors.cyan)),
+        backgroundColor: AppColors.bgPrimary,
+        body: Center(child: CircularProgressIndicator(color: AppColors.accent)),
       );
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF050B18),
+      backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "Editar Perfil",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -251,17 +252,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
-                          colors: [Colors.cyan, Colors.blue],
+                          colors: [AppColors.accent, AppColors.steel],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                       ),
                       child: CircleAvatar(
                         radius: 48,
-                        backgroundColor: Colors.white12,
+                        backgroundColor: AppColors.divider,
                         backgroundImage: imagen != null ? FileImage(imagen!) : null,
                         child: imagen == null
-                            ? const Icon(Icons.person, size: 44, color: Colors.white)
+                            ? const Icon(Icons.person, size: 44, color: AppColors.textPrimary)
                             : null,
                       ),
                     ),
@@ -271,10 +272,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: const BoxDecoration(
-                          color: Colors.cyan,
+                          color: AppColors.accent,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.camera_alt, color: Colors.white, size: 14),
+                        child: const Icon(Icons.camera_alt, color: AppColors.textPrimary, size: 14),
                       ),
                     ),
                   ],
@@ -390,15 +391,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: 48,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
+                  backgroundColor: AppColors.accent,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   elevation: 0,
                 ),
                 onPressed: guardarPerfil,
-                icon: const Icon(Icons.save_outlined, color: Colors.white, size: 18),
+                icon: const Icon(Icons.save_outlined, color: AppColors.textPrimary, size: 18),
                 label: const Text(
                   "Guardar Cambios",
-                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+                  style: TextStyle(color: AppColors.textPrimary, fontSize: 15, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -414,12 +415,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       padding: const EdgeInsets.only(top: 6, bottom: 2),
       child: Row(
         children: [
-          Icon(icono, color: Colors.cyan, size: 15),
+          Icon(icono, color: AppColors.accent, size: 15),
           const SizedBox(width: 6),
           Text(
             texto,
             style: const TextStyle(
-              color: Colors.white54,
+              color: AppColors.textSubtle,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,

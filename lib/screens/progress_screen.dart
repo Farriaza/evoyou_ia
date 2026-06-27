@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 
 class ProgressScreen extends StatefulWidget {
 
@@ -59,13 +60,13 @@ class _ProgressScreenState
 
       decoration: BoxDecoration(
 
-        color: const Color(0xFF111C30),
+        color: AppColors.bgCard,
 
         borderRadius:
         BorderRadius.circular(25),
 
         border: Border.all(
-          color: Colors.white10,
+          color: AppColors.divider40,
         ),
       ),
 
@@ -123,7 +124,7 @@ class _ProgressScreenState
                       const TextStyle(
 
                         color:
-                        Colors.white,
+                        AppColors.textPrimary,
 
                         fontSize: 20,
 
@@ -142,7 +143,7 @@ class _ProgressScreenState
                       TextStyle(
 
                         color:
-                        Colors.white
+                        AppColors.textPrimary
                             .withOpacity(0.6),
 
                         fontSize: 14,
@@ -172,7 +173,7 @@ class _ProgressScreenState
 
                 Icons.arrow_forward,
 
-                color: Colors.white38,
+                color: AppColors.textSubtle60,
               ),
 
               progressInfo(
@@ -184,7 +185,7 @@ class _ProgressScreenState
 
                 Icons.trending_up,
 
-                color: Colors.greenAccent,
+                color: AppColors.success,
               ),
 
               progressInfo(
@@ -212,7 +213,7 @@ class _ProgressScreenState
           label,
 
           style: const TextStyle(
-            color: Colors.white54,
+            color: AppColors.textSubtle,
             fontSize: 13,
           ),
         ),
@@ -225,7 +226,7 @@ class _ProgressScreenState
 
           style: const TextStyle(
 
-            color: Colors.white,
+            color: AppColors.textPrimary,
 
             fontSize: 18,
 
@@ -260,7 +261,7 @@ class _ProgressScreenState
     return Scaffold(
 
       backgroundColor:
-      const Color(0xFF071120),
+      AppColors.bgPrimary,
 
       appBar: AppBar(
 
@@ -275,7 +276,7 @@ class _ProgressScreenState
           "Progreso",
 
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -308,8 +309,8 @@ class _ProgressScreenState
                 gradient: const LinearGradient(
 
                   colors: [
-                    Color(0xFF00C6FF),
-                    Color(0xFF0072FF),
+                    AppColors.accent,
+                    AppColors.steel,
                   ],
                 ),
               ),
@@ -325,7 +326,7 @@ class _ProgressScreenState
 
                     Icons.insights,
 
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
 
                     size: 50,
                   ),
@@ -338,7 +339,7 @@ class _ProgressScreenState
 
                     style: TextStyle(
 
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
 
                       fontSize: 32,
 
@@ -354,7 +355,7 @@ class _ProgressScreenState
 
                     style: TextStyle(
 
-                      color: Colors.white70,
+                      color: AppColors.textMuted,
 
                       fontSize: 15,
                     ),
@@ -373,7 +374,7 @@ class _ProgressScreenState
 
               icon: Icons.monitor_weight,
 
-              color: Colors.orange,
+              color: AppColors.warning,
 
               initial:
               "${pesoInicial.toStringAsFixed(1)} KG",
@@ -393,7 +394,7 @@ class _ProgressScreenState
 
               icon: Icons.local_fire_department,
 
-              color: Colors.redAccent,
+              color: AppColors.error,
 
               initial:
               "${grasaInicial.toStringAsFixed(1)}%",
@@ -413,7 +414,7 @@ class _ProgressScreenState
 
               icon: Icons.fitness_center,
 
-              color: Colors.cyan,
+              color: AppColors.accent,
 
               initial:
               "${masaInicial.toStringAsFixed(1)} KG",

@@ -1,6 +1,7 @@
 // login_screen.dart
 
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../services/firestore_service.dart';
@@ -120,7 +121,7 @@ class _LoginScreenState
           return AlertDialog(
 
             backgroundColor:
-            const Color(0xFF101826),
+            AppColors.bgSecondary,
 
             shape:
             RoundedRectangleBorder(
@@ -133,7 +134,7 @@ class _LoginScreenState
               "Error",
 
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontWeight:
                 FontWeight.bold,
               ),
@@ -144,7 +145,7 @@ class _LoginScreenState
               mensaje,
 
               style: const TextStyle(
-                color: Colors.white70,
+                color: AppColors.textMuted,
                 fontSize: 15,
               ),
             ),
@@ -163,7 +164,7 @@ class _LoginScreenState
 
                   style: TextStyle(
                     color:
-                    Color(0xFF00D9FF),
+                    AppColors.accent,
                     fontWeight:
                     FontWeight.bold,
                   ),
@@ -190,7 +191,7 @@ class _LoginScreenState
       resizeToAvoidBottomInset: true,
 
       backgroundColor:
-      const Color(0xFF020817),
+      AppColors.bgPrimary,
 
       body: Container(
 
@@ -205,9 +206,9 @@ class _LoginScreenState
 
             colors: [
 
-              Color(0xFF071120),
-              Color(0xFF040B18),
-              Color(0xFF020817),
+              AppColors.bgPrimary,
+              AppColors.bgPrimary,
+              AppColors.bgPrimary,
             ],
           ),
         ),
@@ -281,7 +282,7 @@ class _LoginScreenState
 
                               style: TextStyle(
                                 color:
-                                Colors.white,
+                                AppColors.textPrimary,
                               ),
                             ),
                           ),
@@ -311,7 +312,7 @@ class _LoginScreenState
                         style: TextStyle(
 
                           color:
-                          Colors.white,
+                          AppColors.textPrimary,
 
                           fontSize: 44,
 
@@ -355,7 +356,7 @@ class _LoginScreenState
 
                   style: TextStyle(
 
-                    color: Colors.white38,
+                    color: AppColors.textSubtle60,
 
                     fontSize: 11,
 
@@ -388,7 +389,7 @@ class _LoginScreenState
 
                     border: Border.all(
                       color:
-                      Colors.white10,
+                      AppColors.divider40,
                     ),
                   ),
 
@@ -402,7 +403,7 @@ class _LoginScreenState
                         .emailAddress,
 
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                     ),
 
                     decoration:
@@ -418,7 +419,7 @@ class _LoginScreenState
                       hintStyle:
                       const TextStyle(
                         color:
-                        Colors.white54,
+                        AppColors.textSubtle,
                         fontSize: 17,
                       ),
 
@@ -428,7 +429,7 @@ class _LoginScreenState
                         Icons.email_rounded,
 
                         color:
-                        Color(0xFF00D9FF),
+                        AppColors.accent,
 
                         size: 30,
                       ),
@@ -468,7 +469,7 @@ class _LoginScreenState
 
                     border: Border.all(
                       color:
-                      Colors.white10,
+                      AppColors.divider40,
                     ),
                   ),
 
@@ -481,7 +482,7 @@ class _LoginScreenState
                     ocultarPassword,
 
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                     ),
 
                     decoration:
@@ -498,7 +499,7 @@ class _LoginScreenState
                       hintStyle:
                       const TextStyle(
                         color:
-                        Colors.white54,
+                        AppColors.textSubtle,
                         fontSize: 17,
                       ),
 
@@ -508,7 +509,7 @@ class _LoginScreenState
                         Icons.lock_rounded,
 
                         color:
-                        Color(0xFF00D9FF),
+                        AppColors.accent,
 
                         size: 30,
                       ),
@@ -534,7 +535,7 @@ class _LoginScreenState
                               .visibility,
 
                           color:
-                          Colors.white54,
+                          AppColors.textSubtle,
 
                           size: 28,
                         ),
@@ -575,7 +576,7 @@ class _LoginScreenState
                           const SnackBar(
 
                             backgroundColor:
-                            Color(0xFF101826),
+                            AppColors.bgSecondary,
 
                             content: Text(
 
@@ -583,7 +584,7 @@ class _LoginScreenState
 
                               style: TextStyle(
                                 color:
-                                Colors.white,
+                                AppColors.textPrimary,
                               ),
                             ),
                           ),
@@ -597,7 +598,7 @@ class _LoginScreenState
                         style: TextStyle(
 
                           color:
-                          Color(0xFF00D9FF),
+                          AppColors.accent,
 
                           fontWeight:
                           FontWeight.w600,
@@ -630,7 +631,7 @@ class _LoginScreenState
                         style: TextStyle(
 
                           color:
-                          Colors.white60,
+                          AppColors.textMuted60,
 
                           fontSize: 14,
 
@@ -664,8 +665,8 @@ class _LoginScreenState
 
                       colors: [
 
-                        Color(0xFF00CFFF),
-                        Color(0xFF18B9E8),
+                        AppColors.accent,
+                        AppColors.accentGlow,
                       ],
                     ),
 
@@ -674,7 +675,7 @@ class _LoginScreenState
                       BoxShadow(
 
                         color:
-                        Color(0x6600D9FF),
+                        AppColors.accent.withOpacity(0.4),
 
                         blurRadius: 20,
 
@@ -715,7 +716,7 @@ class _LoginScreenState
 
                         ? const CircularProgressIndicator(
                       color:
-                      Colors.white,
+                      AppColors.textPrimary,
                     )
 
                         : const Text(
@@ -727,7 +728,7 @@ class _LoginScreenState
                         fontSize: 21,
 
                         color:
-                        Colors.white,
+                        AppColors.textPrimary,
 
                         fontWeight:
                         FontWeight.bold,

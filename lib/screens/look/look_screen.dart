@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -248,7 +249,7 @@ NO expliques fuera del JSON.
         SnackBar(
 
           backgroundColor:
-          Colors.red,
+          AppColors.error,
 
           content:
           Text(e.toString()),
@@ -286,7 +287,7 @@ NO expliques fuera del JSON.
       decoration: BoxDecoration(
 
         color:
-        const Color(0xFF111C30),
+        AppColors.bgCard,
 
         borderRadius:
         BorderRadius.circular(25),
@@ -305,7 +306,7 @@ NO expliques fuera del JSON.
 
             style: const TextStyle(
 
-              color: Colors.cyan,
+              color: AppColors.accent,
 
               fontSize: 18,
 
@@ -322,7 +323,7 @@ NO expliques fuera del JSON.
 
             style: const TextStyle(
 
-              color: Colors.white,
+              color: AppColors.textPrimary,
 
               fontSize: 15,
 
@@ -340,7 +341,7 @@ NO expliques fuera del JSON.
     return Scaffold(
 
       backgroundColor:
-      const Color(0xFF071120),
+      AppColors.bgPrimary,
 
       appBar: AppBar(
 
@@ -402,7 +403,7 @@ NO expliques fuera del JSON.
                       size: 90,
 
                       color:
-                      Colors.white24,
+                      AppColors.divider,
                     ),
 
                     const SizedBox(
@@ -416,7 +417,7 @@ NO expliques fuera del JSON.
                           .styleFrom(
 
                         backgroundColor:
-                        Colors.cyan,
+                        AppColors.accent,
                       ),
 
                       onPressed:
@@ -427,7 +428,7 @@ NO expliques fuera del JSON.
                         Icons.camera_alt,
 
                         color:
-                        Colors.white,
+                        AppColors.textPrimary,
                       ),
 
                       label: const Text(
@@ -437,7 +438,7 @@ NO expliques fuera del JSON.
                         style:
                         TextStyle(
                           color:
-                          Colors.white,
+                          AppColors.textPrimary,
                         ),
                       ),
                     ),
@@ -477,7 +478,7 @@ NO expliques fuera del JSON.
                         .styleFrom(
 
                       backgroundColor:
-                      Colors.cyan,
+                      AppColors.accent,
 
                       shape:
                       RoundedRectangleBorder(
@@ -501,7 +502,7 @@ NO expliques fuera del JSON.
 
                         ? const CircularProgressIndicator(
                       color:
-                      Colors.white,
+                      AppColors.textPrimary,
                     )
 
                         : const Text(
@@ -511,7 +512,7 @@ NO expliques fuera del JSON.
                       style: TextStyle(
 
                         color:
-                        Colors.white,
+                        AppColors.textPrimary,
 
                         fontSize: 18,
 

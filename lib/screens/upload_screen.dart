@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 
 class UploadScreen extends StatelessWidget {
   const UploadScreen({super.key});
@@ -6,13 +7,13 @@ class UploadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.bgPrimary,
 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
           "Subir Fotos",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.textPrimary),
         ),
       ),
 
@@ -27,14 +28,14 @@ class UploadScreen extends StatelessWidget {
               height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white10,
+                color: AppColors.divider40,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: const Center(
                 child: Text(
                   "Subir Selfie",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 20,
                   ),
                 ),
@@ -47,14 +48,14 @@ class UploadScreen extends StatelessWidget {
               height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white10,
+                color: AppColors.divider40,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: const Center(
                 child: Text(
                   "Subir Foto Corporal",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 20,
                   ),
                 ),

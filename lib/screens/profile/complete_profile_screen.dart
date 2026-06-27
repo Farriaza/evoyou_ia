@@ -1,5 +1,6 @@
 // lib/screens/complete_profile_screen.dart
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,12 +18,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     with TickerProviderStateMixin {
 
   // ── Paleta de Colores ──────────────────────────────────────────────────────
-  static const Color _bgPrincipal   = Color(0xFF071120);
-  static const Color _bgSecundario  = Color(0xFF0B1628);
-  static const Color _bgBurbuja     = Color(0xFF0F2036);
-  static const Color _cyanAccent    = Color(0xFF00D4E8);
-  static const Color _avatarBg      = Color(0xFF0A1E35);
-  static const Color _avatarBorder  = Color(0xFF00D4E8);
+  // AppColors.bgPrimary → AppColors.bgPrimary
+  // AppColors.bgCard → AppColors.bgCard
+  // AppColors.bgBubble → AppColors.bgBubble
+  // AppColors.accent → AppColors.accent
+  // AppColors.bgBubble → AppColors.bgBubble
+  // AppColors.accent → AppColors.accent
   // ──────────────────────────────────────────────────────────────────────────
 
   final ScrollController scrollController = ScrollController();
@@ -292,7 +293,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(backgroundColor: Colors.red, content: Text(e.toString())),
+        SnackBar(backgroundColor: AppColors.error, content: Text(e.toString())),
       );
     } finally {
       if (mounted) setState(() => loading = false);
@@ -308,8 +309,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _avatarBg,
-        border: Border.all(color: _avatarBorder, width: 2),
+        color: AppColors.bgBubble,
+        border: Border.all(color: AppColors.accent, width: 2),
       ),
       child: ClipOval(
         child: Image.asset(
@@ -317,7 +318,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           fit: BoxFit.cover,
           errorBuilder: (_, __, ___) => Icon(
             Icons.smart_toy_rounded,
-            color: _cyanAccent,
+            color: AppColors.accent,
             size: size * 0.55,
           ),
         ),
@@ -336,7 +337,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
-              color: _bgBurbuja,
+              color: AppColors.bgBubble,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(4),
                 topRight: Radius.circular(18),
@@ -359,7 +360,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                         height: 7,
                         margin: const EdgeInsets.symmetric(horizontal: 2.5),
                         decoration: BoxDecoration(
-                          color: _cyanAccent.withOpacity(0.55 + 0.45 * bounce),
+                          color: AppColors.accent.withOpacity(0.55 + 0.45 * bounce),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -386,7 +387,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
               decoration: const BoxDecoration(
-                color: _bgBurbuja,
+                color: AppColors.bgBubble,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(4),
                   topRight: Radius.circular(18),
@@ -397,7 +398,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               child: Text(
                 texto,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 15.5,
                   height: 1.45,
                 ),
@@ -422,7 +423,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           ),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+              colors: [AppColors.accent, AppColors.steel],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -436,7 +437,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
           child: Text(
             texto,
             style: const TextStyle(
-              color: Color(0xFF04111F),
+              color: AppColors.bgBubble,
               fontSize: 15.5,
               fontWeight: FontWeight.w600,
               height: 1.35,
@@ -454,9 +455,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
       decoration: BoxDecoration(
-        color: _bgSecundario,
+        color: AppColors.bgCard,
         border: Border(
-          bottom: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1),
+          bottom: BorderSide(color: AppColors.accent.withOpacity(0.15), width: 1),
         ),
       ),
       child: Column(
@@ -472,7 +473,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                     Text(
                       "Evo",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.3,
@@ -480,7 +481,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
                     ),
                     Text(
                       "Asistente de Perfil",
-                      style: TextStyle(color: Colors.white54, fontSize: 12.5),
+                      style: TextStyle(color: AppColors.textSubtle, fontSize: 12.5),
                     ),
                   ],
                 ),
@@ -488,14 +489,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 decoration: BoxDecoration(
-                  color: _cyanAccent.withOpacity(0.12),
+                  color: AppColors.accent.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: _cyanAccent.withOpacity(0.3), width: 1),
+                  border: Border.all(color: AppColors.accent.withOpacity(0.3), width: 1),
                 ),
                 child: Text(
                   "$porcentaje%",
                   style: const TextStyle(
-                    color: _cyanAccent,
+                    color: AppColors.accent,
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
@@ -508,8 +509,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: progreso,
-              backgroundColor: Colors.white10,
-              valueColor: const AlwaysStoppedAnimation<Color>(_cyanAccent),
+              backgroundColor: AppColors.divider40,
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent),
               minHeight: 4,
             ),
           ),
@@ -529,8 +530,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         bottom: MediaQuery.of(context).padding.bottom + 14,
       ),
       decoration: BoxDecoration(
-        color: _bgSecundario,
-        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
+        color: AppColors.bgCard,
+        border: Border(top: BorderSide(color: AppColors.accent.withOpacity(0.15), width: 1)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -543,12 +544,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               child: ElevatedButton(
                 onPressed: () => avanzarFlujo(opcion),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _bgBurbuja,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.bgBubble,
+                  foregroundColor: AppColors.textPrimary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: _cyanAccent.withOpacity(0.3), width: 1),
+                    side: BorderSide(color: AppColors.accent.withOpacity(0.3), width: 1),
                   ),
                 ),
                 child: Text(
@@ -573,8 +574,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         bottom: MediaQuery.of(context).padding.bottom + 10,
       ),
       decoration: BoxDecoration(
-        color: _bgSecundario,
-        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
+        color: AppColors.bgCard,
+        border: Border(top: BorderSide(color: AppColors.accent.withOpacity(0.15), width: 1)),
       ),
       child: Row(
         children: [
@@ -584,7 +585,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               controller: chatInputController,
               keyboardType: _obtenerTipoTeclado(),
               inputFormatters: _obtenerFiltrosTeclado(),
-              style: const TextStyle(color: Colors.white, fontSize: 15),
+              style: const TextStyle(color: AppColors.textPrimary, fontSize: 15),
               textInputAction: TextInputAction.send,
               onSubmitted: (_) {
                 final t = chatInputController.text.trim();
@@ -593,14 +594,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               },
               decoration: InputDecoration(
                 hintText: _obtenerHintTexto(),
-                hintStyle: const TextStyle(color: Colors.white30, fontSize: 14.5),
+                hintStyle: const TextStyle(color: AppColors.textSubtle50, fontSize: 14.5),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.06),
+                fillColor: AppColors.textPrimary.withOpacity(0.06),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(color: _cyanAccent.withOpacity(0.5), width: 1),
+                  borderSide: BorderSide(color: AppColors.accent.withOpacity(0.5), width: 1),
                 ),
               ),
             ),
@@ -618,12 +619,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                  colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+                  colors: [AppColors.accent, AppColors.steel],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+              child: const Icon(Icons.send_rounded, color: AppColors.textPrimary, size: 18),
             ),
           ),
         ],
@@ -640,8 +641,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         bottom: MediaQuery.of(context).padding.bottom + 14,
       ),
       decoration: BoxDecoration(
-        color: _bgSecundario,
-        border: Border(top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1)),
+        color: AppColors.bgCard,
+        border: Border(top: BorderSide(color: AppColors.accent.withOpacity(0.15), width: 1)),
       ),
       child: SizedBox(
         width: double.infinity,
@@ -649,8 +650,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
         child: ElevatedButton(
           onPressed: loading ? null : guardarPerfil,
           style: ElevatedButton.styleFrom(
-            backgroundColor: _cyanAccent,
-            foregroundColor: const Color(0xFF04111F),
+            backgroundColor: AppColors.accent,
+            foregroundColor: AppColors.bgBubble,
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           ),
@@ -658,7 +659,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
               ? const SizedBox(
             width: 22,
             height: 22,
-            child: CircularProgressIndicator(color: Color(0xFF04111F), strokeWidth: 2.5),
+            child: CircularProgressIndicator(color: AppColors.bgBubble, strokeWidth: 2.5),
           )
               : const Text(
             "Finalizar y Guardar Perfil",
@@ -674,7 +675,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgPrincipal,
+      backgroundColor: AppColors.bgPrimary,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,

@@ -1,5 +1,6 @@
 // lib/screens/chatbot_screen.dart
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -33,13 +34,13 @@ class _ChatbotScreenState extends State<ChatbotScreen>
   Map<String, List<String>> _diccionario = {};
 
   // ── Paleta de colores consistente con el entorno ──────────────────────────
-  static const Color _bgPrincipal  = Color(0xFF071120);
-  static const Color _bgSecundario = Color(0xFF0D1A2D);
-  static const Color _bgBurbuja    = Color(0xFF0F2036);
-  static const Color _cyanAccent   = Color(0xFF00D4E8);
-  static const Color _cyanLight    = Color(0xFF00B8CC);
-  static const Color _avatarBg     = Color(0xFF0A1E35); // navy oscuro (sin morado)
-  static const Color _avatarBorder = Color(0xFF00D4E8); // borde cyan
+  // AppColors.bgPrimary → usa AppColors.bgPrimary directamente
+  // AppColors.bgSecondary → usa AppColors.bgSecondary directamente
+  // AppColors.bgBubble → usa AppColors.bgBubble directamente
+  // AppColors.accent → usa AppColors.accent directamente
+  // AppColors.accentGlow → usa AppColors.accentGlow directamente
+  // AppColors.bgBubble → usa AppColors.bgBubble directamente // navy oscuro (sin morado)
+  // AppColors.accent → usa AppColors.accent directamente // borde cyan
   // ──────────────────────────────────────────────────────────────────────────
 
   @override
@@ -204,11 +205,11 @@ class _ChatbotScreenState extends State<ChatbotScreen>
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _avatarBg,
-        border: Border.all(color: _avatarBorder, width: 2),
+        color: AppColors.bgBubble,
+        border: Border.all(color: AppColors.accent, width: 2),
         boxShadow: [
           BoxShadow(
-            color: _cyanAccent.withOpacity(0.25),
+            color: AppColors.accent.withOpacity(0.25),
             blurRadius: 8,
             spreadRadius: 1,
           ),
@@ -221,7 +222,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
           // Si la imagen falla, muestra ícono genérico acorde a la paleta
           errorBuilder: (_, __, ___) => Icon(
             Icons.smart_toy_rounded,
-            color: _cyanAccent,
+            color: AppColors.accent,
             size: size * 0.55,
           ),
         ),
@@ -240,7 +241,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color: _bgBurbuja,
+              color: AppColors.bgBubble,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(18),
                 topRight: Radius.circular(18),
@@ -263,7 +264,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                         height: 7,
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
-                          color: _cyanAccent.withOpacity(0.6 + 0.4 * bounce),
+                          color: AppColors.accent.withOpacity(0.6 + 0.4 * bounce),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -309,12 +310,12 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                     decoration: BoxDecoration(
                       gradient: esUsuario
                           ? const LinearGradient(
-                        colors: [Color(0xFF00B8CC), Color(0xFF0090A8)],
+                        colors: [AppColors.accentGlow, AppColors.steel],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       )
                           : null,
-                      color: esUsuario ? null : _bgBurbuja,
+                      color: esUsuario ? null : AppColors.bgBubble,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(18),
                         topRight: const Radius.circular(18),
@@ -324,7 +325,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                       boxShadow: [
                         BoxShadow(
                           color: esUsuario
-                              ? _cyanAccent.withOpacity(0.15)
+                              ? AppColors.accent.withOpacity(0.15)
                               : Colors.black.withOpacity(0.2),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
@@ -334,7 +335,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                     child: Text(
                       msg.text,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         height: 1.45,
                         fontSize: 14.5,
                       ),
@@ -346,7 +347,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                     child: Text(
                       _horaTexto(msg.hora),
                       style: const TextStyle(
-                        color: Colors.white30,
+                        color: AppColors.textSubtle50,
                         fontSize: 10,
                       ),
                     ),
@@ -373,9 +374,9 @@ class _ChatbotScreenState extends State<ChatbotScreen>
         bottom: MediaQuery.of(context).padding.bottom + 10,
       ),
       decoration: BoxDecoration(
-        color: _bgSecundario,
+        color: AppColors.bgSecondary,
         border: Border(
-          top: BorderSide(color: _cyanAccent.withOpacity(0.15), width: 1),
+          top: BorderSide(color: AppColors.accent.withOpacity(0.15), width: 1),
         ),
       ),
       child: Row(
@@ -383,15 +384,15 @@ class _ChatbotScreenState extends State<ChatbotScreen>
           Expanded(
             child: TextField(
               controller: _controller,
-              style: const TextStyle(color: Colors.white, fontSize: 14.5),
+              style: const TextStyle(color: AppColors.textPrimary, fontSize: 14.5),
               maxLines: null,
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _enviarMensaje(),
               decoration: InputDecoration(
                 hintText: "Escribe tu mensaje...",
-                hintStyle: const TextStyle(color: Colors.white30, fontSize: 14),
+                hintStyle: const TextStyle(color: AppColors.textSubtle50, fontSize: 14),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.06),
+                fillColor: AppColors.textPrimary.withOpacity(0.06),
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: 18, vertical: 11),
                 border: OutlineInputBorder(
@@ -401,7 +402,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(26),
                   borderSide:
-                  BorderSide(color: _cyanAccent.withOpacity(0.5), width: 1),
+                  BorderSide(color: AppColors.accent.withOpacity(0.5), width: 1),
                 ),
               ),
             ),
@@ -416,19 +417,19 @@ class _ChatbotScreenState extends State<ChatbotScreen>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF00D4E8), Color(0xFF0090A8)],
+                  colors: [AppColors.accent, AppColors.steel],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: _cyanAccent.withOpacity(0.35),
+                    color: AppColors.accent.withOpacity(0.35),
                     blurRadius: 10,
                     spreadRadius: 1,
                   ),
                 ],
               ),
-              child: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+              child: const Icon(Icons.send_rounded, color: AppColors.textPrimary, size: 18),
             ),
           ),
         ],
@@ -441,10 +442,10 @@ class _ChatbotScreenState extends State<ChatbotScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgPrincipal,
+      backgroundColor: AppColors.bgPrimary,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: _bgSecundario,
+        backgroundColor: AppColors.bgSecondary,
         elevation: 0,
         shadowColor: Colors.transparent,
         // Línea inferior sutil cyan
@@ -452,12 +453,12 @@ class _ChatbotScreenState extends State<ChatbotScreen>
           preferredSize: const Size.fromHeight(1),
           child: Container(
             height: 1,
-            color: _cyanAccent.withOpacity(0.18),
+            color: AppColors.accent.withOpacity(0.18),
           ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
+              color: AppColors.textMuted, size: 18),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Row(
@@ -472,7 +473,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     letterSpacing: 0.4,
                   ),
                 ),
@@ -482,7 +483,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                       width: 7,
                       height: 7,
                       decoration: const BoxDecoration(
-                        color: Color(0xFF00E676),
+                        color: AppColors.success,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -491,7 +492,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                       "En línea",
                       style: TextStyle(
                         fontSize: 11,
-                        color: Colors.white54,
+                        color: AppColors.textSubtle,
                         letterSpacing: 0.2,
                       ),
                     ),
@@ -504,7 +505,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
         actions: [
           IconButton(
             icon: const Icon(Icons.more_vert_rounded,
-                color: Colors.white54, size: 22),
+                color: AppColors.textSubtle, size: 22),
             onPressed: () {},
           ),
         ],
@@ -519,7 +520,7 @@ class _ChatbotScreenState extends State<ChatbotScreen>
               child: _mensajes.isEmpty
                   ? const Center(
                 child: CircularProgressIndicator(
-                  color: _cyanAccent,
+                  color: AppColors.accent,
                   strokeWidth: 2,
                 ),
               )

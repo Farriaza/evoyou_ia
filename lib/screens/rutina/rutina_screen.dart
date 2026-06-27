@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 
 class RutinaScreen extends StatefulWidget {
   const RutinaScreen({super.key});
@@ -81,10 +82,10 @@ class _RutinaScreenState extends State<RutinaScreen> {
   Widget build(BuildContext context) {
     final fechaSeleccionada = semanaActual[seleccionado];
     final isGym = tipoRutina == "GYM";
-    final accentColor = isGym ? Colors.cyan : Colors.purpleAccent;
+    final accentColor = isGym ? AppColors.accent : AppColors.accentLight;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF071120),
+      backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -92,7 +93,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
         title: const Text(
           "Rutinas",
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontSize: 22,
             fontWeight: FontWeight.w800,
           ),
@@ -130,20 +131,20 @@ class _RutinaScreenState extends State<RutinaScreen> {
                           borderRadius: BorderRadius.circular(22),
                           gradient: activo
                               ? LinearGradient(colors: [
-                            Colors.cyan.withOpacity(0.18),
-                            Colors.blue.withOpacity(0.07),
+                            AppColors.accent.withOpacity(0.18),
+                            AppColors.steel.withOpacity(0.07),
                           ])
                               : null,
-                          color: activo ? null : const Color(0xFF0D1A2D),
+                          color: activo ? null : AppColors.bgSecondary,
                           border: Border.all(
                             color: activo
-                                ? Colors.cyan
-                                : Colors.white.withOpacity(0.07),
+                                ? AppColors.accent
+                                : AppColors.textPrimary.withOpacity(0.07),
                             width: activo ? 2 : 1,
                           ),
                           boxShadow: activo
                               ? [BoxShadow(
-                            color: Colors.cyan.withOpacity(0.12),
+                            color: AppColors.accent.withOpacity(0.12),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           )]
@@ -159,10 +160,10 @@ class _RutinaScreenState extends State<RutinaScreen> {
                                   dias[index],
                                   style: TextStyle(
                                     color: activo
-                                        ? Colors.cyan
+                                        ? AppColors.accent
                                         : esHoyIndex
-                                        ? Colors.cyan.withOpacity(0.5)
-                                        : Colors.white54,
+                                        ? AppColors.accent.withOpacity(0.5)
+                                        : AppColors.textSubtle,
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -171,7 +172,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                                 Text(
                                   fecha.day.toString(),
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.textPrimary,
                                     fontSize: 26,
                                     fontWeight: FontWeight.w800,
                                   ),
@@ -186,7 +187,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                                   height: 5,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.cyan.withOpacity(0.5),
+                                    color: AppColors.accent.withOpacity(0.5),
                                   ),
                                 ),
                               ),
@@ -203,7 +204,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
               const Text(
                 "Tu rutina",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 27,
                   fontWeight: FontWeight.w800,
                 ),
@@ -224,26 +225,26 @@ class _RutinaScreenState extends State<RutinaScreen> {
                           borderRadius: BorderRadius.circular(22),
                           border: Border.all(
                             color: tipoRutina == "GYM"
-                                ? Colors.cyan
-                                : Colors.white.withOpacity(0.07),
+                                ? AppColors.accent
+                                : AppColors.textPrimary.withOpacity(0.07),
                           ),
                           gradient: tipoRutina == "GYM"
                               ? LinearGradient(colors: [
-                            Colors.cyan.withOpacity(0.22),
-                            Colors.blue.withOpacity(0.07),
+                            AppColors.accent.withOpacity(0.22),
+                            AppColors.steel.withOpacity(0.07),
                           ])
                               : null,
                           color: tipoRutina == "GYM"
                               ? null
-                              : const Color(0xFF0D1A2D),
+                              : AppColors.bgSecondary,
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.fitness_center, color: Colors.cyan, size: 26),
+                            Icon(Icons.fitness_center, color: AppColors.accent, size: 26),
                             SizedBox(width: 10),
                             Text("GYM", style: TextStyle(
-                              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w800,
                             )),
                           ],
                         ),
@@ -261,26 +262,26 @@ class _RutinaScreenState extends State<RutinaScreen> {
                           borderRadius: BorderRadius.circular(22),
                           border: Border.all(
                             color: tipoRutina == "CASA"
-                                ? Colors.purpleAccent
-                                : Colors.white.withOpacity(0.07),
+                                ? AppColors.accentLight
+                                : AppColors.textPrimary.withOpacity(0.07),
                           ),
                           gradient: tipoRutina == "CASA"
                               ? LinearGradient(colors: [
-                            Colors.purpleAccent.withOpacity(0.22),
-                            Colors.pink.withOpacity(0.07),
+                            AppColors.accentLight.withOpacity(0.22),
+                            AppColors.accentLight.withOpacity(0.07),
                           ])
                               : null,
                           color: tipoRutina == "CASA"
                               ? null
-                              : const Color(0xFF0D1A2D),
+                              : AppColors.bgSecondary,
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.home, color: Colors.purpleAccent, size: 26),
+                            Icon(Icons.home, color: AppColors.accentLight, size: 26),
                             SizedBox(width: 10),
                             Text("CASA", style: TextStyle(
-                              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w800,
                             )),
                           ],
                         ),
@@ -298,7 +299,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                 padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: const Color(0xFF0D1A2D),
+                  color: AppColors.bgSecondary,
                   border: Border.all(
                     color: accentColor.withOpacity(0.15),
                   ),
@@ -320,8 +321,8 @@ class _RutinaScreenState extends State<RutinaScreen> {
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: isGym
-                              ? [Colors.cyan.withOpacity(0.28), Colors.blue.withOpacity(0.10)]
-                              : [Colors.purpleAccent.withOpacity(0.28), Colors.pink.withOpacity(0.10)],
+                              ? [AppColors.accent.withOpacity(0.28), AppColors.steel.withOpacity(0.10)]
+                              : [AppColors.accentLight.withOpacity(0.28), Colors.pink.withOpacity(0.10)],
                         ),
                       ),
                       child: Icon(
@@ -336,7 +337,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                     Text(
                       "${dias[seleccionado]} ${fechaSeleccionada.day}",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 38,
                         fontWeight: FontWeight.w800,
                       ),
@@ -347,7 +348,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                     Text(
                       subtituloFecha,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.3),
+                        color: AppColors.textPrimary.withOpacity(0.3),
                         fontSize: 13,
                         letterSpacing: 0.4,
                       ),
@@ -358,7 +359,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                     Text(
                       isGym ? "Rutina de gimnasio" : "Rutina en casa",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.4),
+                        color: AppColors.textPrimary.withOpacity(0.4),
                         fontSize: 15,
                       ),
                     ),
@@ -367,7 +368,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
 
                     Icon(
                       Icons.fact_check_outlined,
-                      color: Colors.white.withOpacity(0.12),
+                      color: AppColors.textPrimary.withOpacity(0.12),
                       size: 100,
                     ),
 
@@ -377,7 +378,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                       "Aún no tienes ejercicios",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
                       ),
@@ -389,7 +390,7 @@ class _RutinaScreenState extends State<RutinaScreen> {
                       "Los ejercicios generados aparecerán aquí.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.35),
+                        color: AppColors.textPrimary.withOpacity(0.35),
                         fontSize: 14,
                         height: 1.6,
                       ),

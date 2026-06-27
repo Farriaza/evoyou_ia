@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../profile/complete_profile_screen.dart';
@@ -26,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!aceptoTerminos) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
           content: Text("Debes aceptar los términos y condiciones"),
         ),
       );
@@ -91,16 +92,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF162033),
+        backgroundColor: AppColors.bgSecondary,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20)),
-        title:   Text(title,   style: const TextStyle(color: Colors.white)),
-        content: Text(message, style: const TextStyle(color: Colors.white70)),
+        title:   Text(title,   style: const TextStyle(color: AppColors.textPrimary)),
+        content: Text(message, style: const TextStyle(color: AppColors.textMuted)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("Aceptar",
-                style: TextStyle(color: Colors.cyan)),
+                style: TextStyle(color: AppColors.accent)),
           ),
         ],
       ),
@@ -111,22 +112,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       {Widget? suffix}) {
     return InputDecoration(
       labelText:  label,
-      labelStyle: const TextStyle(color: Colors.white54),
-      prefixIcon: Icon(icon, color: Colors.cyan, size: 20),
+      labelStyle: const TextStyle(color: AppColors.textSubtle),
+      prefixIcon: Icon(icon, color: AppColors.accent, size: 20),
       suffixIcon: suffix,
       filled:     true,
-      fillColor:  const Color(0xFF0D1B2A),
+      fillColor:  AppColors.bgBubble,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Colors.white12),
+        borderSide: const BorderSide(color: AppColors.divider),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Colors.white12),
+        borderSide: const BorderSide(color: AppColors.divider),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Colors.cyan, width: 1.5),
+        borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
       ),
     );
   }
@@ -134,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF060E1A),
+      backgroundColor: AppColors.bgPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -151,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Row(
                       children: [
                         const Icon(Icons.chevron_left,
-                            color: Colors.cyan, size: 28),
+                            color: AppColors.accent, size: 28),
                         const SizedBox(width: 4),
                         RichText(
                           text: const TextSpan(
@@ -161,10 +162,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: [
                               TextSpan(
                                   text: "EvoYou.",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(color: AppColors.textPrimary)),
                               TextSpan(
                                   text: "AI",
-                                  style: TextStyle(color: Colors.cyan)),
+                                  style: TextStyle(color: AppColors.accent)),
                             ],
                           ),
                         ),
@@ -199,13 +200,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     width: 110,
                                     height: 210,
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF0A1E35),
+                                      color: AppColors.bgBubble,
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(
-                                          color: Colors.cyan.withOpacity(0.3)),
+                                          color: AppColors.accent.withOpacity(0.3)),
                                     ),
                                     child: const Icon(Icons.person,
-                                        color: Colors.cyan, size: 60),
+                                        color: AppColors.accent, size: 60),
                                   ),
                                 ),
                               ),
@@ -222,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0D1B2A),
+                              color: AppColors.bgBubble,
                               borderRadius: const BorderRadius.only(
                                 topLeft:    Radius.circular(18),
                                 topRight:   Radius.circular(18),
@@ -232,7 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 bottomLeft: Radius.circular(4),
                               ),
                               border: Border.all(
-                                  color: Colors.cyan.withOpacity(0.4)),
+                                  color: AppColors.accent.withOpacity(0.4)),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 Text(
                                   "¡Hola! 👋",
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.textPrimary,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -253,14 +254,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       TextSpan(
                                         text: "Soy ",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: AppColors.textPrimary,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       TextSpan(
                                         text: "Evo.",
                                         style: TextStyle(
-                                            color: Colors.cyan,
+                                            color: AppColors.accent,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -271,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 Text(
                                   "Primero vamos a crear tu cuenta para comenzar juntos tu transformación.",
                                   style: TextStyle(
-                                      color: Colors.white70, fontSize: 13),
+                                      color: AppColors.textMuted, fontSize: 13),
                                 ),
                               ],
                             ),
@@ -293,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Nombre
                     TextField(
                       controller: nombreController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       decoration:
                       _fieldDecoration("Nombre", Icons.person_outline),
                     ),
@@ -302,7 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Apellido
                     TextField(
                       controller: apellidoController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       decoration:
                       _fieldDecoration("Apellido", Icons.badge_outlined),
                     ),
@@ -311,7 +312,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Apodo
                     TextField(
                       controller: apodoController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       decoration:
                       _fieldDecoration("Apodo", Icons.label_outline),
                     ),
@@ -321,7 +322,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextField(
                       controller: correoController,
                       keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       decoration: _fieldDecoration(
                           "Correo electrónico", Icons.mail_outline),
                     ),
@@ -331,7 +332,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextField(
                       controller: passwordController,
                       obscureText: ocultarPassword,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       decoration: _fieldDecoration(
                         "Contraseña",
                         Icons.lock_outline,
@@ -342,7 +343,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ocultarPassword
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined,
-                            color: Colors.white38,
+                            color: AppColors.textSubtle60,
                             size: 20,
                           ),
                         ),
@@ -369,8 +370,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 24,
                             child: Checkbox(
                               value: aceptoTerminos,
-                              activeColor: Colors.cyan,
-                              side: const BorderSide(color: Colors.white38),
+                              activeColor: AppColors.accent,
+                              side: const BorderSide(color: AppColors.textSubtle60),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4)),
                               onChanged: null,
@@ -378,13 +379,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           const SizedBox(width: 10),
                           const Text("Acepto los ",
-                              style: TextStyle(color: Colors.white70)),
+                              style: TextStyle(color: AppColors.textMuted)),
                           const Text(
                             "términos y condiciones",
                             style: TextStyle(
-                              color: Colors.cyan,
+                              color: AppColors.accent,
                               decoration: TextDecoration.underline,
-                              decorationColor: Colors.cyan,
+                              decorationColor: AppColors.accent,
                             ),
                           ),
                         ],
@@ -398,7 +399,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 58,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.cyan,
+                          backgroundColor: AppColors.accent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)),
                           elevation: 0,
@@ -406,7 +407,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: loading ? null : register,
                         child: loading
                             ? const CircularProgressIndicator(
-                            color: Colors.white)
+                            color: AppColors.textPrimary)
                             : const Text(
                           "Continuar",
                           style: TextStyle(
@@ -426,14 +427,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: [
                         const Text(
                           "¿Ya tienes una cuenta? ",
-                          style: TextStyle(color: Colors.white54),
+                          style: TextStyle(color: AppColors.textSubtle),
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: const Text(
                             "Iniciar sesión",
                             style: TextStyle(
-                              color: Colors.cyan,
+                              color: AppColors.accent,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app_theme.dart';
 
 class TermsScreen extends StatelessWidget {
 
@@ -25,7 +26,7 @@ class TermsScreen extends StatelessWidget {
 
           style: const TextStyle(
 
-            color: Colors.cyan,
+            color: AppColors.accent,
 
             fontSize: 20,
 
@@ -45,7 +46,7 @@ class TermsScreen extends StatelessWidget {
 
       style: const TextStyle(
 
-        color: Colors.white70,
+        color: AppColors.textMuted,
 
         fontSize: 15,
 
@@ -60,7 +61,7 @@ class TermsScreen extends StatelessWidget {
     return Scaffold(
 
       backgroundColor:
-      const Color(0xFF071120),
+      AppColors.bgPrimary,
 
       appBar: AppBar(
 
@@ -101,7 +102,7 @@ class TermsScreen extends StatelessWidget {
 
                       style: TextStyle(
 
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
 
                         fontSize: 34,
 
@@ -194,7 +195,7 @@ class TermsScreen extends StatelessWidget {
                   ElevatedButton.styleFrom(
 
                     backgroundColor:
-                    Colors.cyan,
+                    AppColors.accent,
 
                     shape:
                     RoundedRectangleBorder(
@@ -220,7 +221,7 @@ class TermsScreen extends StatelessWidget {
 
                     style: TextStyle(
 
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
 
                       fontSize: 18,
 
