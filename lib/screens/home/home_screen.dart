@@ -425,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _moduloHorizontalIcon(titulo: "Rutina", icono: Icons.fitness_center, color: AppColors.steel, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RutinaScreen()))),
-                  _moduloHorizontalIcon(titulo: "Ejercicios", icono: Icons.sports_gymnastics, color: AppColors.warning, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ExerciseScreen()))),
+                  _moduloHorizontalIcon(titulo: "Biblioteca", icono: Icons.sports_gymnastics, color: AppColors.warning, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ExerciseScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? '')))),
                   _moduloHorizontalIcon(titulo: "Running", icono: Icons.directions_run_rounded, color: AppColors.error, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RunningScreen()))),
                   _moduloHorizontalIcon(titulo: "Look", icono: Icons.auto_awesome, color: AppColors.accentGlow, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LookScreen()))),
                   _moduloHorizontalIcon(titulo: "Nutrición", icono: Icons.restaurant_menu, color: AppColors.success, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NutritionScreen()))),

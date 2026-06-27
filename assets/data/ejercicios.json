@@ -1,0 +1,642 @@
+[
+  {
+    "nombre": "Press de banca",
+    "musculo": "Pectorales",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/press_de_banca_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Press inclinado con mancuernas",
+    "musculo": "Pectorales",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/press_inclinado_con_mancuernas_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Aperturas en máquina",
+    "musculo": "Pectorales",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/aperturas_en_maquina_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Press en máquina Smith",
+    "musculo": "Pectorales",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/press_en_maquina_smith_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Fondos en paralelas",
+    "musculo": "Pectorales",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/fondos_en_paralelas_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Flexiones de pecho",
+    "musculo": "Pectorales",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/flexiones_de_pecho_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Flexiones inclinadas en silla",
+    "musculo": "Pectorales",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/flexiones_inclinadas_en_silla_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Flexiones diamante",
+    "musculo": "Pectorales",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/flexiones_diamante_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Press con bandas elásticas",
+    "musculo": "Pectorales",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/press_con_bandas_elasticas_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Flexiones con palmada",
+    "musculo": "Pectorales",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "pectorales/flexiones_con_palmada_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Remo con barra",
+    "musculo": "Espalda",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/remo_con_barra_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Jalón al pecho",
+    "musculo": "Espalda",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/jalon_al_pecho_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Remo en máquina",
+    "musculo": "Espalda",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/remo_en_maquina_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Peso muerto",
+    "musculo": "Espalda",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/peso_muerto_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Pull-over con polea",
+    "musculo": "Espalda",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/pullover_con_polea_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Remo invertido con mesa",
+    "musculo": "Espalda",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/remo_invertido_con_mesa_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Superman",
+    "musculo": "Espalda",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/superman_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Remo con banda elástica",
+    "musculo": "Espalda",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/remo_con_banda_elastica_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Buenos días sin peso",
+    "musculo": "Espalda",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/buenos_dias_sin_peso_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Dominadas en barra de puerta",
+    "musculo": "Espalda",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "espalda/dominadas_en_barra_de_puerta_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Sentadilla con barra",
+    "musculo": "Piernas",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/sentadilla_con_barra_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Prensa de piernas",
+    "musculo": "Piernas",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/prensa_de_piernas_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Extensión de cuádriceps",
+    "musculo": "Piernas",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/extension_de_cuadriceps_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Curl femoral en máquina",
+    "musculo": "Piernas",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/curl_femoral_en_maquina_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Elevación de talones en máquina",
+    "musculo": "Piernas",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/elevacion_de_talones_en_maquina_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Sentadilla sin peso",
+    "musculo": "Piernas",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/sentadilla_sin_peso_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Zancadas en el sitio",
+    "musculo": "Piernas",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/zancadas_en_el_sitio_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Puente de glúteo",
+    "musculo": "Piernas",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/puente_de_gluteo_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Sentadilla búlgara con silla",
+    "musculo": "Piernas",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/sentadilla_bulgara_con_silla_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Elevación de talones de pie",
+    "musculo": "Piernas",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "piernas/elevacion_de_talones_de_pie_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Curl con barra",
+    "musculo": "Biceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_con_barra_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Curl alterno con mancuernas",
+    "musculo": "Biceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_alterno_con_mancuernas_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Curl en polea baja",
+    "musculo": "Biceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_en_polea_baja_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Curl concentrado",
+    "musculo": "Biceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_concentrado_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Curl en banco Scott",
+    "musculo": "Biceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_en_banco_scott_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Curl con banda elástica",
+    "musculo": "Biceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_con_banda_elastica_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Curl con mochila cargada",
+    "musculo": "Biceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_con_mochila_cargada_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Curl isométrico en puerta",
+    "musculo": "Biceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_isometrico_en_puerta_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Curl con botellas de agua",
+    "musculo": "Biceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_con_botellas_de_agua_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Curl negativo con banda",
+    "musculo": "Biceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "biceps/curl_negativo_con_banda_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Press francés",
+    "musculo": "Triceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/press_frances_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Extensión en polea alta",
+    "musculo": "Triceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/extension_en_polea_alta_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Fondos en banco",
+    "musculo": "Triceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/fondos_en_banco_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Press cerrado en banca",
+    "musculo": "Triceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/press_cerrado_en_banca_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Patada de tríceps con mancuerna",
+    "musculo": "Triceps",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/patada_de_triceps_con_mancuerna_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Fondos de tríceps en silla",
+    "musculo": "Triceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/fondos_de_triceps_en_silla_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Flexiones cerradas",
+    "musculo": "Triceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/flexiones_cerradas_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Extensión con banda elástica",
+    "musculo": "Triceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/extension_con_banda_elastica_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Press de suelo",
+    "musculo": "Triceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/press_de_suelo_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Patada de tríceps sin peso",
+    "musculo": "Triceps",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "triceps/patada_de_triceps_sin_peso_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Press militar",
+    "musculo": "Hombros",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/press_militar_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Elevaciones laterales con mancuernas",
+    "musculo": "Hombros",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/elevaciones_laterales_con_mancuernas_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Press Arnold",
+    "musculo": "Hombros",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/press_arnold_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Elevación frontal con barra",
+    "musculo": "Hombros",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/elevacion_frontal_con_barra_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Pájaros con mancuernas",
+    "musculo": "Hombros",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/pajaros_con_mancuernas_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Press con bandas elásticas",
+    "musculo": "Hombros",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/press_con_bandas_elasticas_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Elevaciones laterales con botellas",
+    "musculo": "Hombros",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/elevaciones_laterales_con_botellas_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Plancha con toque de hombro",
+    "musculo": "Hombros",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/plancha_con_toque_de_hombro_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Pino contra la pared",
+    "musculo": "Hombros",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/pino_contra_la_pared_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Círculos de brazos",
+    "musculo": "Hombros",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "hombros/circulos_de_brazos_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Crunch en máquina",
+    "musculo": "Abdominal",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/crunch_en_maquina_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Elevación de piernas en paralelas",
+    "musculo": "Abdominal",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/elevacion_de_piernas_en_paralelas_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Rueda abdominal",
+    "musculo": "Abdominal",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/rueda_abdominal_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Crunch en polea alta",
+    "musculo": "Abdominal",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/crunch_en_polea_alta_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Giros rusos con disco",
+    "musculo": "Abdominal",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/giros_rusos_con_disco_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Plancha abdominal",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/plancha_abdominal_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Crunch clásico",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/crunch_clasico_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Elevación de piernas en el suelo",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/elevacion_de_piernas_en_el_suelo_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Bicicleta abdominal",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/bicicleta_abdominal_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Mountain climbers",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "abdominal/mountain_climbers_casa.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Cinta de correr (intervalos)",
+    "musculo": "Cardio",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/cinta_de_correr_intervalos_gym.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Bicicleta estática",
+    "musculo": "Cardio",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/bicicleta_estatica_gym.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Elíptica",
+    "musculo": "Cardio",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/eliptica_gym.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Remo (máquina)",
+    "musculo": "Cardio",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/remo_maquina_gym.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Step / escaladora",
+    "musculo": "Cardio",
+    "ambiente": "gym",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/step_escaladora_gym.mp4",
+    "orden": 5
+  },
+  {
+    "nombre": "Saltos a la cuerda",
+    "musculo": "Cardio",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/saltos_a_la_cuerda_casa.mp4",
+    "orden": 1
+  },
+  {
+    "nombre": "Burpees",
+    "musculo": "Cardio",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/burpees_casa.mp4",
+    "orden": 2
+  },
+  {
+    "nombre": "Jumping jacks",
+    "musculo": "Cardio",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/jumping_jacks_casa.mp4",
+    "orden": 3
+  },
+  {
+    "nombre": "Mountain climbers rápidos",
+    "musculo": "Cardio",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/mountain_climbers_rapidos_casa.mp4",
+    "orden": 4
+  },
+  {
+    "nombre": "Sentadilla con salto",
+    "musculo": "Cardio",
+    "ambiente": "casa",
+    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "videoFile": "cardio/sentadilla_con_salto_casa.mp4",
+    "orden": 5
+  }
+]

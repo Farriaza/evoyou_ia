@@ -28,7 +28,8 @@ dependencies:
 
   google_mlkit_face_detection: ^0.13.1
   http: ^1.2.1
-
+  video_player: ^2.10.1
+  shared_preferences: ^2.2.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,3 +46,6 @@ flutter:
     - assets/imagenes/muscles/
     - assets/imagenes/food/
     - assets/imagenes/avatar/
+    - assets/video/
+    - assets/data/
+    - assets/data/ejercicios.json
