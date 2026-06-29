@@ -46,6 +46,13 @@ flutter:
     - assets/imagenes/muscles/
     - assets/imagenes/food/
     - assets/imagenes/avatar/
-    - assets/video/
+    - assets/video/abdominal/
+    - assets/video/pectorales/
+    - assets/video/espalda/
+    - assets/video/piernas/
+    - assets/video/biceps/
+    - assets/video/triceps/
+    - assets/video/hombros/
+    - assets/video/cardio/
     - assets/data/
     - assets/data/ejercicios.json

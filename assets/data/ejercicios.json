@@ -1,65 +1,64 @@
 [
   {
-    "nombre": "Press de banca",
-    "musculo": "Pectorales",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/press_de_banca_gym.mp4",
+    "nombre": "Rueda abdominal",
+    "musculo": "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "Arrodíllate en el suelo y sujeta la rueda con ambas manos frente a ti. Manteniendo la espalda recta y el core contraído, desliza la rueda hacia adelante alejándola de tu cuerpo hasta donde alcances sin que tu espalda baja se arquee. Luego, utiliza la fuerza de tus abdominales para rodar de regreso a la posición inicial.",
+    "videoFile": "assets/video/abdominal/1.mp4",
+    "rutina": "Realiza 3 series de 8 a 12 repeticiones, con un descanso de 30 segundos entre serie, enfocándote en un movimiento controlado y lento.",
     "orden": 1
   },
   {
-    "nombre": "Press inclinado con mancuernas",
-    "musculo": "Pectorales",
+    "nombre": "Rutina abdomen completo",
+    "musculo": "Abdominal",
     "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/press_inclinado_con_mancuernas_gym.mp4",
+    "descripcion": "El Russian Twist con disco es un ejercicio de fortalecimiento del core que se centra en los oblicuos, el recto abdominal y el transverso abdominal. Consiste en girar el torso de un lado a otro mientras sostienes un disco frente al pecho, manteniendo el abdomen contraído y el movimiento controlado. Es ideal para mejorar la estabilidad, la fuerza del tronco y la resistencia abdominal.",
+    "rutina": "Realiza 3 series de 16 a 20 giros (8 a 10 por lado), enfocándote en un movimiento controlado y lento, manteniendo el abdomen contraído y girando el torso de forma completa en cada repetición. Descansa 30 a 45 segundos entre series.",
+    "videoFile": "assets/video/abdominal/2.mp4",
     "orden": 2
   },
   {
-    "nombre": "Aperturas en máquina",
-    "musculo": "Pectorales",
+    "nombre": "Plancha",
+    "musculo": "Abdominal",
     "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/aperturas_en_maquina_gym.mp4",
+    "descripcion": "La plancha es un ejercicio isométrico que fortalece el core, incluyendo el recto abdominal, el transverso abdominal, los oblicuos y la zona lumbar. Además, mejora la estabilidad, la postura y el equilibrio al mantener el cuerpo alineado desde la cabeza hasta los talones.",
+    "rutina": "Realiza 3 series de 30 a 60 segundos, manteniendo el cuerpo completamente alineado, el abdomen contraído y los glúteos activados durante todo el ejercicio. Descansa 30 a 45 segundos entre series.",
+    "videoFile":"assets/video/abdominal/3.mp4",
     "orden": 3
   },
   {
-    "nombre": "Press en máquina Smith",
-    "musculo": "Pectorales",
+    "nombre": "Crunch",
+    "musculo":  "Abdominal",
     "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/press_en_maquina_smith_gym.mp4",
+    "descripcion": "Es un ejercicio enfocado en fortalecer los músculos oblicuos, el transverso abdominal y el core. Se realiza acostado de lado, elevando el torso mediante la contracción de los oblicuos mientras se mantiene el cuello alineado y el movimiento controlado. Es ideal para mejorar la estabilidad del tronco, fortalecer la cintura y desarrollar la musculatura lateral del abdomen.",
+    "rutina":"Realiza 3 series de 12 a 15 repeticiones por cada lado, enfocándote en un movimiento controlado y lento, contrayendo los oblicuos en cada repetición y evitando impulsarte con el cuello o los brazos. Descansa 30 a 45 segundos entre series.",
+    "videoFile":"assets/video/abdominal/4.mp4",
     "orden": 4
   },
   {
-    "nombre": "Fondos en paralelas",
-    "musculo": "Pectorales",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/fondos_en_paralelas_gym.mp4",
+    "nombre": "Flexiones de pecho",
+    "musculo":  "Abdominal",
+    "ambiente": "casa",
+    "descripcion": "La Elevación de Piernas es un ejercicio que fortalece principalmente la parte inferior del abdomen, además de activar el transverso abdominal, los flexores de la cadera y el core. Consiste en elevar las piernas de forma controlada manteniéndolas extendidas y descender lentamente sin que los pies toquen el suelo, manteniendo la zona lumbar estable durante todo el movimiento.",
+    "rutina": "Realiza 3 series de 10 a 15 repeticiones, enfocándote en un movimiento controlado y lento, manteniendo el abdomen contraído y evitando arquear la zona lumbar. Descansa 30 a 45 segundos entre series.",
+    "videoFile":"assets/video/abdominal/5.mp4",
     "orden": 5
   },
   {
-    "nombre": "Flexiones de pecho",
-    "musculo": "Pectorales",
+    "nombre": "Roman Chair Back Extension",
+    "musculo":  "Abdominal",
     "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/flexiones_de_pecho_casa.mp4",
-    "orden": 1
-  },
-  {
-    "nombre": "Flexiones inclinadas en silla",
-    "musculo": "Pectorales",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "pectorales/flexiones_inclinadas_en_silla_casa.mp4",
-    "orden": 2
+    "descripcion": "La Extensión de Espalda en Silla Romana es un ejercicio enfocado en fortalecer la zona lumbar, los glúteos y los isquiotibiales, además de mejorar la estabilidad del core y la postura. Se realiza inclinando el torso hacia adelante desde la cadera y elevándolo de forma controlada hasta alinear el cuerpo, evitando sobreextender la columna.",
+   "rutina": "Realiza 3 series de 10 a 15 repeticiones, enfocándote en un movimiento controlado y lento, contrayendo la zona lumbar y los glúteos al subir, y descendiendo de forma controlada. Descansa 45 a 60 segundos entre se",
+    "videoFile":"assets/video/abdominal/6.mp4",
+    "orden": 6
   },
   {
     "nombre": "Flexiones diamante",
     "musculo": "Pectorales",
     "ambiente": "casa",
     "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
+    "rutina":"Realiza 3 series de 10 a 15 repeticiones, enfocándote en un movimiento controlado y lento, contrayendo la zona lumbar y los glúteos al subir, y descendiendo de forma controlada. Descansa 45 a 60 segundos entre series.",
     "videoFile": "pectorales/flexiones_diamante_casa.mp4",
     "orden": 3
   },
@@ -477,86 +476,6 @@
     "ambiente": "casa",
     "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
     "videoFile": "hombros/circulos_de_brazos_casa.mp4",
-    "orden": 5
-  },
-  {
-    "nombre": "Crunch en máquina",
-    "musculo": "Abdominal",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/crunch_en_maquina_gym.mp4",
-    "orden": 1
-  },
-  {
-    "nombre": "Elevación de piernas en paralelas",
-    "musculo": "Abdominal",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/elevacion_de_piernas_en_paralelas_gym.mp4",
-    "orden": 2
-  },
-  {
-    "nombre": "Rueda abdominal",
-    "musculo": "Abdominal",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/rueda_abdominal_gym.mp4",
-    "orden": 3
-  },
-  {
-    "nombre": "Crunch en polea alta",
-    "musculo": "Abdominal",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/crunch_en_polea_alta_gym.mp4",
-    "orden": 4
-  },
-  {
-    "nombre": "Giros rusos con disco",
-    "musculo": "Abdominal",
-    "ambiente": "gym",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/giros_rusos_con_disco_gym.mp4",
-    "orden": 5
-  },
-  {
-    "nombre": "Plancha abdominal",
-    "musculo": "Abdominal",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/plancha_abdominal_casa.mp4",
-    "orden": 1
-  },
-  {
-    "nombre": "Crunch clásico",
-    "musculo": "Abdominal",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/crunch_clasico_casa.mp4",
-    "orden": 2
-  },
-  {
-    "nombre": "Elevación de piernas en el suelo",
-    "musculo": "Abdominal",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/elevacion_de_piernas_en_el_suelo_casa.mp4",
-    "orden": 3
-  },
-  {
-    "nombre": "Bicicleta abdominal",
-    "musculo": "Abdominal",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/bicicleta_abdominal_casa.mp4",
-    "orden": 4
-  },
-  {
-    "nombre": "Mountain climbers",
-    "musculo": "Abdominal",
-    "ambiente": "casa",
-    "descripcion": "Descripción pendiente: agrega aquí la técnica correcta y consejos clave para este ejercicio.",
-    "videoFile": "abdominal/mountain_climbers_casa.mp4",
     "orden": 5
   },
   {
